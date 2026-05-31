@@ -82,6 +82,17 @@ function activateNav() {
   });
 }
 
+// Résout une URL d'image (typiquement /assets/media/uploads/...) en chemin
+// utilisable depuis une page admin (qui vit dans /admin/). On retourne un
+// chemin relatif `../...` pour que ça fonctionne quel que soit le sous-dossier
+// d'hébergement.
+function normalizePublicImageUrl(url) {
+  const value = String(url || '').trim();
+  if (!value) return '';
+  if (/^https?:\/\//i.test(value) || value.startsWith('data:')) return value;
+  return '../' + value.replace(/^\/+/, '');
+}
+
 window.AdminV2 = {
   apiFetch,
   parseDate,
@@ -92,4 +103,5 @@ window.AdminV2 = {
   formatStatusLabel,
   badgeMarkup,
   activateNav,
+  normalizePublicImageUrl,
 };

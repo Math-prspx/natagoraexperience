@@ -280,6 +280,21 @@ button:hover {
   color: #2f4722;
 }
 
+.form-subblock {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  background: #f4f6ef;
+}
+
+.form-subblock-title {
+  margin: 0;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #2f4722;
+}
+
 .form-divider {
   height: 1px;
   width: 100%;
@@ -337,6 +352,32 @@ button:hover {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: #f5f7ee;
+}
+
+.admin-image-preview-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.admin-image-remove {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: #fff;
+  border: 1px solid #d04646;
+  color: #d04646;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.admin-image-remove:hover {
+  background: #d04646;
+  color: #fff;
 }
 
 table {

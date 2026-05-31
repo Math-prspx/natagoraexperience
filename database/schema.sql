@@ -22,6 +22,7 @@ CREATE TABLE places (
     short_description_fr TEXT NULL,
     long_description_fr MEDIUMTEXT NULL,
     cover_image_url VARCHAR(500) NULL,
+    intro_image_url VARCHAR(500) NULL,
     metric_map_label VARCHAR(120) NULL,
     metric_map_value VARCHAR(180) NULL,
     area_ha INT NULL,

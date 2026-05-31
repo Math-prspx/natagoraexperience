@@ -21,7 +21,7 @@ class PlaceService
         $rows = $this->pdo->query(
             'SELECT
                 id, slug, name_fr, headline_fr, short_description_fr, long_description_fr,
-                cover_image_url, metric_map_label, metric_map_value,
+                cover_image_url, intro_image_url, metric_map_label, metric_map_value,
                 area_ha, created_year, species_count, specificities_json
             FROM places
             ORDER BY name_fr ASC'
@@ -43,7 +43,7 @@ class PlaceService
         $stmt = $this->pdo->prepare(
             'SELECT
                 id, slug, name_fr, headline_fr, short_description_fr, long_description_fr,
-                cover_image_url, metric_map_label, metric_map_value,
+                cover_image_url, intro_image_url, metric_map_label, metric_map_value,
                 area_ha, created_year, species_count, specificities_json
             FROM places
             WHERE id = :id
@@ -70,12 +70,12 @@ class PlaceService
         $stmt = $this->pdo->prepare(
             'INSERT INTO places (
                 slug, name_fr, headline_fr, short_description_fr, long_description_fr,
-                cover_image_url, metric_map_label, metric_map_value,
+                cover_image_url, intro_image_url, metric_map_label, metric_map_value,
                 area_ha, created_year, species_count, specificities_json,
                 created_at, updated_at
             ) VALUES (
                 :slug, :name_fr, :headline_fr, :short_description_fr, :long_description_fr,
-                :cover_image_url, :metric_map_label, :metric_map_value,
+                :cover_image_url, :intro_image_url, :metric_map_label, :metric_map_value,
                 :area_ha, :created_year, :species_count, :specificities_json,
                 CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
             )'
@@ -99,6 +99,7 @@ class PlaceService
                 short_description_fr = :short_description_fr,
                 long_description_fr = :long_description_fr,
                 cover_image_url = :cover_image_url,
+                intro_image_url = :intro_image_url,
                 metric_map_label = :metric_map_label,
                 metric_map_value = :metric_map_value,
                 area_ha = :area_ha,

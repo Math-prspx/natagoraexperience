@@ -195,19 +195,30 @@ class WalkService
 
         $params = [];
 
+        $applyInFilter = function (string $rawValue, string $column, string $prefix) use (&$sql, &$params): void {
+            $parts = array_values(array_filter(array_map('trim', explode(',', $rawValue)), 'strlen'));
+            if (empty($parts)) {
+                return;
+            }
+            $placeholders = [];
+            foreach ($parts as $i => $value) {
+                $key = $prefix . $i;
+                $placeholders[] = ':' . $key;
+                $params[$key] = $value;
+            }
+            $sql .= ' AND ' . $column . ' IN (' . implode(', ', $placeholders) . ')';
+        };
+
         if (!empty($filters['family'])) {
-            $sql .= ' AND f.code = :family';
-            $params['family'] = $filters['family'];
+            $applyInFilter((string) $filters['family'], 'f.code', 'family_');
         }
 
         if (!empty($filters['subcategory'])) {
-            $sql .= ' AND sc.slug = :subcategory';
-            $params['subcategory'] = $filters['subcategory'];
+            $applyInFilter((string) $filters['subcategory'], 'sc.slug', 'subcategory_');
         }
 
         if (!empty($filters['place'])) {
-            $sql .= ' AND p.slug = :place';
-            $params['place'] = $filters['place'];
+            $applyInFilter((string) $filters['place'], 'p.slug', 'place_');
         }
 
         if (!empty($filters['from_date'])) {

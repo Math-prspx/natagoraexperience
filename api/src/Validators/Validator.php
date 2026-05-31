@@ -97,13 +97,15 @@ class Validator
             }
 
             $image = trim((string) ($item['image'] ?? ''));
+            $title = trim((string) ($item['title'] ?? ''));
             $text = trim((string) ($item['text'] ?? ''));
-            if ($image === '' && $text === '') {
+            if ($image === '' && $title === '' && $text === '') {
                 continue;
             }
 
             $items[] = [
                 'image' => $image,
+                'title' => $title,
                 'text' => $text,
             ];
         }

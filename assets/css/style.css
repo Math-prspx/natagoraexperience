@@ -816,18 +816,38 @@ a {
   }
 
   .formules-grid {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    height: auto;
+    padding: 0;
     gap: 18px;
-    background-color: blue;
   }
 
   .formula-card,
   .tilt-left,
   .tilt-right {
     transform: none;
+    flex: 1 1 auto;
+    width: 100%;
+    min-height: auto;
+    padding: 36px 22px 30px;
+    border-width: 8px;
+  }
+
+  .formula-card:hover {
+    min-height: auto;
+  }
+
+  .formula-icon,
+  .formula-icon-img {
+    width: 48px;
+    height: 48px;
   }
 
   .reserves {
+    height: auto;
+    min-height: auto;
     padding: 90px 20px 60px;
   }
 
@@ -840,10 +860,17 @@ a {
 
   .reserves-content {
     width: 100%;
+    height: auto;
     padding: 0;
+    gap: 18px;
+  }
+
+  .reserves-arrow {
+    display: none;
   }
 
   .reserves-bullets {
+    height: auto;
     padding-right: 0;
     justify-content: flex-start;
   }
@@ -852,6 +879,8 @@ a {
     display: grid;
     grid-template-columns: 1fr;
     gap: 14px;
+    overflow: visible;
+    transform: none !important;
   }
 
   .reserve-card {

@@ -18,16 +18,17 @@ document.addEventListener('DOMContentLoaded', () => {
       return fromAdmin
         .map((item) => ({
           image: normalizePublicUrl(item.image, '/img/chouette.jpg'),
+          title: String(item.title || '').trim(),
           text: String(item.text || '').trim(),
         }))
-        .filter((item) => item.image || item.text);
+        .filter((item) => item.image || item.title || item.text);
     }
 
     const name = place.name_fr || 'Réserve';
     return [
-      { image: normalizePublicUrl(place.cover_image_url, '/img/chouette.jpg'), text: `${name}: falaises, pelouses calcaires et sentiers panoramiques.` },
-      { image: '/img/Map-bgr-01.png', text: "Zones refuges pour de nombreuses espèces d'oiseaux, insectes et plantes rares." },
-      { image: '/img/chouette.jpg', text: 'Parcours accessibles et points de vue pédagogiques pour les visites guidées.' },
+      { image: normalizePublicUrl(place.cover_image_url, '/img/chouette.jpg'), title: 'Paysages', text: `${name}: falaises, pelouses calcaires et sentiers panoramiques.` },
+      { image: '/img/Map-bgr-01.png', title: 'Biodiversité', text: "Zones refuges pour de nombreuses espèces d'oiseaux, insectes et plantes rares." },
+      { image: '/img/chouette.jpg', title: 'Accès', text: 'Parcours accessibles et points de vue pédagogiques pour les visites guidées.' },
     ];
   };
 
@@ -37,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const shortDesc = place.short_description_fr || 'Bloc texte descriptif de la réserve.';
     const longDesc = place.long_description_fr || 'Cette réserve naturelle propose une immersion dans des paysages préservés, avec une biodiversité remarquable et des parcours découverte adaptés à tous les publics.';
     const heroImage = normalizePublicUrl(place.cover_image_url, '/img/chouette.jpg');
+    const introImage = normalizePublicUrl(place.intro_image_url, '') || heroImage;
     const specificites = buildSpécificités(place);
     const mapLabel = place.metric_map_label || 'Carte';
     const mapValue = place.metric_map_value || 'Accessible';
@@ -79,15 +81,17 @@ document.addEventListener('DOMContentLoaded', () => {
       </section>
 
       <section class="reserve-detail-content">
-        <section class="reserve-detail-intro">
-          <article class="reserve-detail-text">
-            <h2>Explorer la réserve</h2>
-            <p>${shortDesc}</p>
-            <p>${longDesc}</p>
-          </article>
-          <figure class="reserve-detail-photo">
-            <img src="${heroImage}" alt="${title}" loading="lazy">
-          </figure>
+        <section class="detail-dates reserve-detail-intro">
+          <div class="detail-dates-layout">
+            <div class="detail-dates-copy">
+              <h2>Explorer la réserve</h2>
+              ${shortDesc ? `<p class="detail-dates-summary">${shortDesc}</p>` : ''}
+              ${longDesc ? `<p class="detail-dates-description">${longDesc}</p>` : ''}
+            </div>
+            <figure class="detail-dates-visual">
+              <img src="${introImage}" alt="${title}" loading="lazy">
+            </figure>
+          </div>
         </section>
 
         <section class="reserve-metrics" aria-label="Informations clés réserve">
@@ -132,7 +136,10 @@ document.addEventListener('DOMContentLoaded', () => {
                   (item) => `
                 <article class="reserve-specific-card">
                   <img src="${item.image}" alt="Spécificité reserve" loading="lazy">
-                  <p>${item.text}</p>
+                  <div class="reserve-specific-card-body">
+                    ${item.title ? `<h3 class="reserve-specific-card-title">${item.title}</h3>` : ''}
+                    ${item.text ? `<p>${item.text}</p>` : ''}
+                  </div>
                 </article>
               `
                 )
@@ -148,10 +155,6 @@ document.addEventListener('DOMContentLoaded', () => {
             <details>
               <summary>Comment accéder ?</summary>
               <div class="reserve-accordion-body">Accès en transports en commun et en voiture, parkings de proximité, sentiers balisés et consignes de visite.</div>
-            </details>
-            <details open>
-              <summary>Nos visites guidées dans cette réserve</summary>
-              <div class="reserve-accordion-body reserve-accordion-visits">${visitsMarkup}</div>
             </details>
           </div>
         </section>

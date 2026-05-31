@@ -70,49 +70,11 @@
   gap: 64px;
 }
 
-.reserve-detail-intro {
-  display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.95fr);
-  gap: 24px;
-  align-items: stretch;
-}
-
-.reserve-detail-text,
-.reserve-detail-photo {
-  margin: 0;
-  border: 1px solid var(--reserve-detail-line);
-  border-radius: 14px;
-  background: var(--reserve-detail-card);
-  box-shadow: 0 10px 24px rgba(16, 27, 20, 0.08);
-}
-
-.reserve-detail-text {
-  padding: 24px;
-  display: grid;
-  gap: 12px;
-}
-
-.reserve-detail-text h2,
 .reserve-specific h2,
 .reserve-guided h2 {
   margin: 0;
   text-transform: uppercase;
   font-size: clamp(1.45rem, 2.3vw, 2.1rem);
-}
-
-.reserve-detail-text p {
-  margin: 0;
-  color: #425045;
-  line-height: 1.5;
-}
-
-.reserve-detail-photo img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  min-height: 320px;
-  object-fit: cover;
-  border-radius: 14px;
 }
 
 .reserve-metrics {
@@ -122,9 +84,7 @@
 }
 
 .reserve-metric {
-  border: 1px solid var(--reserve-detail-line);
-  border-radius: 12px;
-  background: #f9fbf4;
+  background: #f4f6ef;
   padding: 14px;
   display: grid;
   gap: 6px;
@@ -133,7 +93,6 @@
 .reserve-metric-icon {
   width: 26px;
   height: 26px;
-  border-radius: 999px;
   display: grid;
   place-items: center;
   font-size: 0.72rem;
@@ -187,9 +146,8 @@
 .reserve-specific-controls button {
   width: 40px;
   height: 40px;
-  border-radius: 999px;
-  border: 1px solid #c2ccb7;
-  background: #ffffff;
+  border: 0;
+  background: #f4f6ef;
   cursor: pointer;
   font-weight: 700;
 }
@@ -208,9 +166,7 @@
 .reserve-specific-card {
   flex: 0 0 calc((100% - 28px) / 3);
   min-width: 260px;
-  border: 1px solid var(--reserve-detail-line);
-  border-radius: 14px;
-  background: #ffffff;
+  background: #f4f6ef;
   overflow: hidden;
 }
 
@@ -221,9 +177,22 @@
   display: block;
 }
 
+.reserve-specific-card-body {
+  padding: 12px;
+  display: grid;
+  gap: 6px;
+}
+
+.reserve-specific-card-title {
+  margin: 0;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--reserve-detail-deep);
+}
+
 .reserve-specific-card p {
   margin: 0;
-  padding: 12px;
   color: #49574b;
   line-height: 1.4;
 }
@@ -235,9 +204,7 @@
 }
 
 .reserve-accordion details {
-  border: 1px solid var(--reserve-detail-line);
-  border-radius: 10px;
-  background: #ffffff;
+  background: #f4f6ef;
   padding: 10px 14px;
 }
 
@@ -269,8 +236,7 @@
   justify-content: space-between;
   gap: 10px;
   align-items: center;
-  border: 1px solid #e0e7d6;
-  border-radius: 8px;
+  background: #eef1e6;
   padding: 10px;
 }
 
@@ -306,10 +272,6 @@
 }
 
 @media (max-width: 1100px) {
-  .reserve-detail-intro {
-    grid-template-columns: 1fr;
-  }
-
   .reserve-metrics {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

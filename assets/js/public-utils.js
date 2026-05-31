@@ -263,10 +263,6 @@ window.PublicUtils = (() => {
           <span class="overlay-main-link-icon" aria-hidden="true">${NAV_OVERLAY_ICONS.thematique}</span>
           Thématique
         </a>
-        <a class="overlay-main-link" href="catalogue.html?family=naturalistes">
-          <span class="overlay-main-link-icon" aria-hidden="true">${NAV_OVERLAY_ICONS.naturalistes}</span>
-          Naturalistes
-        </a>
         <a class="overlay-main-link" href="sur-mesure.html">
           <span class="overlay-main-link-icon" aria-hidden="true">${NAV_OVERLAY_ICONS.surmesure}</span>
           Sur mesure
@@ -466,6 +462,199 @@ window.PublicUtils = (() => {
     }
   }
 
+  /* =========================================================================
+     Multi-select dropdown personnalisé.
+     Usage : createMultiSelect(container, { label, options: [{value,label}], values: [], searchable: false, onChange })
+     - values est mis à jour en interne ; lire via api.getValues()
+     - api.setOptions(newOptions) pour rafraîchir la liste
+     - Singleton clickOutside handler partagé
+     ========================================================================= */
+  const _openDropdowns = new Set();
+  document.addEventListener('click', (e) => {
+    _openDropdowns.forEach((api) => {
+      if (!api.root.contains(e.target)) api.close();
+    });
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      _openDropdowns.forEach((api) => api.close());
+    }
+  });
+
+  function createMultiSelect(container, config = {}) {
+    if (!container) return null;
+    const {
+      label = '',
+      placeholder = 'Tous',
+      options = [],
+      values = [],
+      searchable = false,
+      onChange = null,
+      single = false
+    } = config;
+
+    let _options = options.slice();
+    let _values = single ? (values[0] ? [values[0]] : []) : values.slice();
+    let _isOpen = false;
+    let _searchQuery = '';
+
+    container.innerHTML =
+      '<div class="ms-root">' +
+      (label ? '<span class="ms-label">' + escapeHtml(label) + '</span>' : '') +
+      '<button type="button" class="ms-trigger" aria-haspopup="listbox" aria-expanded="false">' +
+        '<span class="ms-trigger-text"></span>' +
+        '<span class="ms-trigger-chevron" aria-hidden="true">▾</span>' +
+      '</button>' +
+      '<div class="ms-panel" role="listbox" hidden>' +
+        (searchable ? '<input type="text" class="ms-search" placeholder="Rechercher..." aria-label="Rechercher">' : '') +
+        '<ul class="ms-options"></ul>' +
+        '<div class="ms-footer">' +
+          '<button type="button" class="ms-clear">Effacer</button>' +
+          '<button type="button" class="ms-apply">OK</button>' +
+        '</div>' +
+      '</div>' +
+      '</div>';
+
+    const root = container.querySelector('.ms-root');
+    const trigger = root.querySelector('.ms-trigger');
+    const triggerText = root.querySelector('.ms-trigger-text');
+    const panel = root.querySelector('.ms-panel');
+    const optionsList = root.querySelector('.ms-options');
+    const searchInput = root.querySelector('.ms-search');
+    const clearBtn = root.querySelector('.ms-clear');
+    const applyBtn = root.querySelector('.ms-apply');
+
+    function renderTrigger() {
+      if (_values.length === 0) {
+        triggerText.textContent = placeholder;
+        trigger.classList.remove('is-filled');
+      } else if (_values.length === 1) {
+        const opt = _options.find((o) => o.value === _values[0]);
+        triggerText.textContent = opt ? opt.label : _values[0];
+        trigger.classList.add('is-filled');
+      } else {
+        triggerText.textContent = _values.length + ' sélectionnés';
+        trigger.classList.add('is-filled');
+      }
+    }
+
+    function renderOptions() {
+      const query = _searchQuery.trim().toLowerCase();
+      const visible = query
+        ? _options.filter((o) => o.label.toLowerCase().includes(query))
+        : _options;
+      optionsList.innerHTML = visible.length === 0
+        ? '<li class="ms-empty">Aucun résultat</li>'
+        : visible.map((opt) => {
+            const checked = _values.includes(opt.value);
+            return '<li class="ms-option' + (checked ? ' is-checked' : '') + '" data-value="' + escapeHtml(opt.value) + '" role="option" aria-selected="' + checked + '">' +
+              '<span class="ms-option-box" aria-hidden="true"></span>' +
+              '<span class="ms-option-label">' + escapeHtml(opt.label) + '</span>' +
+              '</li>';
+          }).join('');
+    }
+
+    function open() {
+      if (_isOpen) return;
+      _isOpen = true;
+      panel.hidden = false;
+      trigger.setAttribute('aria-expanded', 'true');
+      root.classList.add('is-open');
+      _openDropdowns.add(api);
+      if (searchInput) {
+        setTimeout(() => searchInput.focus(), 10);
+      }
+      renderOptions();
+    }
+
+    function close() {
+      if (!_isOpen) return;
+      _isOpen = false;
+      panel.hidden = true;
+      trigger.setAttribute('aria-expanded', 'false');
+      root.classList.remove('is-open');
+      _openDropdowns.delete(api);
+      if (searchInput) {
+        searchInput.value = '';
+        _searchQuery = '';
+      }
+    }
+
+    function emitChange() {
+      if (typeof onChange === 'function') onChange(_values.slice());
+    }
+
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (_isOpen) close(); else open();
+    });
+
+    optionsList.addEventListener('click', (e) => {
+      const li = e.target.closest('.ms-option');
+      if (!li) return;
+      const value = li.dataset.value;
+      if (single) {
+        _values = [value];
+        renderOptions();
+        renderTrigger();
+        emitChange();
+        close();
+        return;
+      }
+      const idx = _values.indexOf(value);
+      if (idx >= 0) _values.splice(idx, 1); else _values.push(value);
+      renderOptions();
+      renderTrigger();
+      emitChange();
+    });
+
+    if (searchInput) {
+      searchInput.addEventListener('input', () => {
+        _searchQuery = searchInput.value;
+        renderOptions();
+      });
+      searchInput.addEventListener('click', (e) => e.stopPropagation());
+    }
+
+    clearBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      _values = [];
+      renderOptions();
+      renderTrigger();
+      emitChange();
+    });
+
+    applyBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      close();
+    });
+
+    const api = {
+      root,
+      getValues: () => _values.slice(),
+      setValues: (newValues) => {
+        _values = single ? (newValues[0] ? [newValues[0]] : []) : newValues.slice();
+        renderOptions();
+        renderTrigger();
+      },
+      setOptions: (newOptions) => {
+        _options = newOptions.slice();
+        renderOptions();
+        renderTrigger();
+      },
+      open,
+      close,
+      destroy: () => {
+        close();
+        container.innerHTML = '';
+      }
+    };
+
+    renderTrigger();
+    renderOptions();
+    return api;
+  }
+
   return {
     appBasePath: APP_BASE_PATH,
     apiBaseUrl,
@@ -483,5 +672,6 @@ window.PublicUtils = (() => {
     revealOnScroll,
     revealAll,
     renderStateMessage,
+    createMultiSelect,
   };
 })();

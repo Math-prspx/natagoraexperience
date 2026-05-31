@@ -24,6 +24,7 @@ CREATE TABLE places (
     short_description_fr TEXT,
     long_description_fr TEXT,
     cover_image_url TEXT,
+    intro_image_url TEXT,
     metric_map_label TEXT,
     metric_map_value TEXT,
     area_ha INTEGER,

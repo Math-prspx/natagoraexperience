@@ -75,7 +75,10 @@
               </div>
               <div class="grid-2">
                 <label>Apercu image principale
-                  <img id="reserveCoverPreview" class="admin-image-preview hidden" alt="Apercu image reserve">
+                  <div class="admin-image-preview-wrap">
+                    <img id="reserveCoverPreview" class="admin-image-preview hidden" alt="Apercu image reserve">
+                    <button type="button" id="reserveCoverRemoveBtn" class="admin-image-remove hidden" aria-label="Supprimer l'image principale">Supprimer l'image</button>
+                  </div>
                 </label>
               </div>
             </section>
@@ -124,31 +127,112 @@
               <label>Description longue (reserve detail)
                 <textarea name="long_description_fr"></textarea>
               </label>
+
+              <div class="grid-2">
+                <label>Image de contenu (URL)
+                  <input name="intro_image_url" placeholder="/assets/media/uploads/reserve-intro.jpg">
+                </label>
+                <label>Televerser image de contenu
+                  <input id="reserveIntroUploadInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif">
+                </label>
+              </div>
+              <div class="grid-2">
+                <label>Apercu image de contenu
+                  <div class="admin-image-preview-wrap">
+                    <img id="reserveIntroPreview" class="admin-image-preview hidden" alt="Apercu image de contenu">
+                    <button type="button" id="reserveIntroRemoveBtn" class="admin-image-remove hidden" aria-label="Supprimer l'image de contenu">Supprimer l'image</button>
+                  </div>
+                </label>
+              </div>
             </section>
 
             <div class="form-divider" aria-hidden="true"></div>
 
             <section class="form-group-block">
               <h3 class="form-group-title">5. Spécificités (carrousel)</h3>
-              <div class="grid-2">
-                <label>Spécificité 1 - Image URL
-                  <input name="spec_1_image" placeholder="/assets/media/uploads/spec1.jpg">
-                </label>
-                <label>Spécificité 1 - Texte
-                  <input name="spec_1_text" placeholder="Texte spécificité">
-                </label>
-                <label>Spécificité 2 - Image URL
-                  <input name="spec_2_image" placeholder="/assets/media/uploads/spec2.jpg">
-                </label>
-                <label>Spécificité 2 - Texte
-                  <input name="spec_2_text" placeholder="Texte spécificité">
-                </label>
-                <label>Spécificité 3 - Image URL
-                  <input name="spec_3_image" placeholder="/assets/media/uploads/spec3.jpg">
-                </label>
-                <label>Spécificité 3 - Texte
-                  <input name="spec_3_text" placeholder="Texte spécificité">
-                </label>
+
+              <div class="form-subblock">
+                <h4 class="form-subblock-title">Spécificité 1</h4>
+                <div class="grid-2">
+                  <label>Titre
+                    <input name="spec_1_title" placeholder="Titre court">
+                  </label>
+                  <label>Texte
+                    <input name="spec_1_text" placeholder="Texte spécificité">
+                  </label>
+                </div>
+                <div class="grid-2">
+                  <label>Image (URL)
+                    <input name="spec_1_image" placeholder="/assets/media/uploads/spec1.jpg">
+                  </label>
+                  <label>Televerser image
+                    <input id="spec1UploadInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif">
+                  </label>
+                </div>
+                <div class="grid-2">
+                  <label>Apercu image
+                    <div class="admin-image-preview-wrap">
+                      <img id="spec1Preview" class="admin-image-preview hidden" alt="Apercu spécificité 1">
+                      <button type="button" id="spec1RemoveBtn" class="admin-image-remove hidden" aria-label="Supprimer l'image spécificité 1">Supprimer l'image</button>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-subblock">
+                <h4 class="form-subblock-title">Spécificité 2</h4>
+                <div class="grid-2">
+                  <label>Titre
+                    <input name="spec_2_title" placeholder="Titre court">
+                  </label>
+                  <label>Texte
+                    <input name="spec_2_text" placeholder="Texte spécificité">
+                  </label>
+                </div>
+                <div class="grid-2">
+                  <label>Image (URL)
+                    <input name="spec_2_image" placeholder="/assets/media/uploads/spec2.jpg">
+                  </label>
+                  <label>Televerser image
+                    <input id="spec2UploadInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif">
+                  </label>
+                </div>
+                <div class="grid-2">
+                  <label>Apercu image
+                    <div class="admin-image-preview-wrap">
+                      <img id="spec2Preview" class="admin-image-preview hidden" alt="Apercu spécificité 2">
+                      <button type="button" id="spec2RemoveBtn" class="admin-image-remove hidden" aria-label="Supprimer l'image spécificité 2">Supprimer l'image</button>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-subblock">
+                <h4 class="form-subblock-title">Spécificité 3</h4>
+                <div class="grid-2">
+                  <label>Titre
+                    <input name="spec_3_title" placeholder="Titre court">
+                  </label>
+                  <label>Texte
+                    <input name="spec_3_text" placeholder="Texte spécificité">
+                  </label>
+                </div>
+                <div class="grid-2">
+                  <label>Image (URL)
+                    <input name="spec_3_image" placeholder="/assets/media/uploads/spec3.jpg">
+                  </label>
+                  <label>Televerser image
+                    <input id="spec3UploadInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif">
+                  </label>
+                </div>
+                <div class="grid-2">
+                  <label>Apercu image
+                    <div class="admin-image-preview-wrap">
+                      <img id="spec3Preview" class="admin-image-preview hidden" alt="Apercu spécificité 3">
+                      <button type="button" id="spec3RemoveBtn" class="admin-image-remove hidden" aria-label="Supprimer l'image spécificité 3">Supprimer l'image</button>
+                    </div>
+                  </label>
+                </div>
               </div>
             </section>
 

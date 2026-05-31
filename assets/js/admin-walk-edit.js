@@ -1,5 +1,5 @@
 window.addEventListener('DOMContentLoaded', async () => {
-  const { apiFetch, setStatus, activateNav, toApiDatetime, toInputDatetime, parseDate, badgeMarkup } = window.AdminV2;
+  const { apiFetch, setStatus, activateNav, toApiDatetime, toInputDatetime, parseDate, badgeMarkup, normalizePublicImageUrl } = window.AdminV2;
   activateNav();
 
   const statusEl = document.getElementById('status');
@@ -29,40 +29,39 @@ window.addEventListener('DOMContentLoaded', async () => {
   let meta = null;
   let currentWalk = null;
 
-  function normalizePublicImageUrl(url) {
-    const value = String(url || '').trim();
-    if (!value) return '';
-    if (value.startsWith('http://') || value.startsWith('https://') || value.startsWith('/')) {
-      return value;
+  const coverRemoveBtn = document.getElementById('coverRemoveBtn');
+  const contentImageRemoveBtn = document.getElementById('contentImageRemoveBtn');
+
+  function setPreview(previewEl, removeBtn, url) {
+    if (!previewEl) return;
+    const normalized = normalizePublicImageUrl(url);
+    if (!normalized) {
+      previewEl.removeAttribute('src');
+      previewEl.classList.add('hidden');
+      if (removeBtn) removeBtn.classList.add('hidden');
+      return;
     }
-    return '/' + value.replace(/^\/+/, '');
+    previewEl.src = normalized;
+    previewEl.classList.remove('hidden');
+    if (removeBtn) removeBtn.classList.remove('hidden');
   }
 
   function updateCoverPreview(url) {
-    if (!coverPreview) return;
-    const normalized = normalizePublicImageUrl(url);
-    if (!normalized) {
-      coverPreview.removeAttribute('src');
-      coverPreview.classList.add('hidden');
-      return;
-    }
-
-    coverPreview.src = normalized;
-    coverPreview.classList.remove('hidden');
+    setPreview(coverPreview, coverRemoveBtn, url);
   }
 
   function updateContentImagePreview(url) {
-    if (!contentImagePreview) return;
-    const normalized = normalizePublicImageUrl(url);
-    if (!normalized) {
-      contentImagePreview.removeAttribute('src');
-      contentImagePreview.classList.add('hidden');
-      return;
-    }
-
-    contentImagePreview.src = normalized;
-    contentImagePreview.classList.remove('hidden');
+    setPreview(contentImagePreview, contentImageRemoveBtn, url);
   }
+
+  coverRemoveBtn?.addEventListener('click', () => {
+    if (walkForm.elements.cover_image_url) walkForm.elements.cover_image_url.value = '';
+    updateCoverPreview('');
+  });
+  contentImageRemoveBtn?.addEventListener('click', () => {
+    if (walkForm.elements.content_image_url) walkForm.elements.content_image_url.value = '';
+    updateContentImagePreview('');
+  });
 
   function galleryToTextareaValue(gallery) {
     if (!Array.isArray(gallery)) {

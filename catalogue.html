@@ -32,42 +32,23 @@
             <button class="hero-chip hero-chip-all is-active" type="button" data-family="">Voir tout</button>
             <button class="hero-chip hero-chip-discovery" type="button" data-family="decouverte"><img src="img/Icon_mountain.svg" alt="" aria-hidden="true">Découverte</button>
             <button class="hero-chip hero-chip-theme" type="button" data-family="thematique"><img src="img/Icon_theme.svg" alt="" aria-hidden="true">Thématique</button>
-            <button class="hero-chip hero-chip-custom" type="button" data-family="sur-mesure"><img src="img/Icon_mesure.svg" alt="" aria-hidden="true">Sur mesure</button>
+            <a class="hero-chip hero-chip-custom" href="sur-mesure.html"><img src="img/Icon_mesure.svg" alt="" aria-hidden="true">Sur mesure</a>
+            <button class="hero-chip hero-chip-more" type="button" id="openFiltersBtn" aria-haspopup="dialog" aria-controls="catFiltersOverlay">
+              <span class="hero-chip-more-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 6h16M7 12h10M10 18h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              </span>
+              <span>Filtres</span>
+              <span id="filtersCount" class="hero-chip-count" hidden>0</span>
+            </button>
           </div>
 
-          <div class="cat-hero-controls" aria-label="Filtres catalogue">
-            <label class="filter-field is-future-filter" for="familyFilter" hidden>
-              Famille
-              <select id="familyFilter" aria-label="Filtrer par famille">
-                <option value="">Toutes</option>
-                <option value="decouverte">Découverte</option>
-                <option value="thematique">Thématique</option>
-                <option value="naturaliste">Naturaliste</option>
-                <option value="sur-mesure">Sur mesure</option>
-              </select>
-            </label>
-
-            <label class="filter-field" for="subcategoryFilter">
-              Sous-categorie
-              <select id="subcategoryFilter" aria-label="Filtrer par sous-categorie">
-                <option value="">Toutes</option>
-              </select>
-            </label>
-
-            <label class="filter-field" for="placeFilter">
-              Lieu
-              <select id="placeFilter" aria-label="Filtrer par lieu">
-                <option value="">Tous</option>
-              </select>
-            </label>
-
-            <label class="filter-field" for="dateFilter">
-              A partir du
-              <input id="dateFilter" type="date" aria-label="Filtrer a partir de la date">
-            </label>
-
-            <button id="refreshBtn" class="refresh-btn hero-refresh-btn is-future-filter" type="button" hidden>Voir les balades</button>
-          </div>
+          <select id="familyFilter" hidden aria-hidden="true">
+            <option value=""></option>
+            <option value="decouverte">Découverte</option>
+            <option value="thematique">Thématique</option>
+            <option value="naturaliste">Naturaliste</option>
+            <option value="sur-mesure">Sur mesure</option>
+          </select>
         </div>
       </div>
     </section>
@@ -78,10 +59,61 @@
         <p id="resultsCount" class="results-count">Chargement...</p>
       </div>
 
+      <div id="activeFilters" class="cat-active-filters" aria-label="Filtres actifs"></div>
+
       <div id="walksGrid" class="agenda-grid"></div>
       <p id="emptyState" class="empty hidden">Aucune promenade trouvée pour ces filtres.</p>
     </section>
   </main>
+
+  <!-- Overlay des filtres avancés -->
+  <div id="catFiltersBackdrop" class="cat-filters-backdrop" aria-hidden="true"></div>
+  <aside id="catFiltersOverlay" class="cat-filters-overlay" role="dialog" aria-modal="true" aria-labelledby="catFiltersTitle" aria-hidden="true">
+    <header class="cat-filters-header">
+      <h2 id="catFiltersTitle" class="cat-filters-title">Affiner ma recherche</h2>
+      <button type="button" class="cat-filters-close" id="closeFiltersBtn" aria-label="Fermer les filtres">×</button>
+    </header>
+
+    <div class="cat-filters-body">
+      <section class="cat-filters-group cat-filters-group-family">
+        <h3 class="cat-filters-group-title">Catégorie</h3>
+        <div class="cat-filters-list" id="familyList">
+          <button type="button" class="cat-filters-item is-active" data-family="">Voir tout</button>
+          <button type="button" class="cat-filters-item" data-family="decouverte">Découverte</button>
+          <button type="button" class="cat-filters-item" data-family="thematique">Thématique</button>
+          <a class="cat-filters-item" href="sur-mesure.html">Sur mesure</a>
+        </div>
+      </section>
+
+      <section class="cat-filters-group">
+        <h3 class="cat-filters-group-title">Sous-catégorie</h3>
+        <div id="subcategoryList" class="cat-filters-list"></div>
+      </section>
+
+      <section class="cat-filters-group">
+        <h3 class="cat-filters-group-title">Lieu</h3>
+        <div id="placeList" class="cat-filters-list"></div>
+      </section>
+
+      <section class="cat-filters-group">
+        <h3 class="cat-filters-group-title">Quand</h3>
+        <div class="cat-filters-list">
+          <button type="button" class="cat-filters-item" data-preset="weekend">Ce week-end</button>
+          <button type="button" class="cat-filters-item" data-preset="month">Ce mois-ci</button>
+          <button type="button" class="cat-filters-item" data-preset="3months">3 prochains mois</button>
+        </div>
+        <label class="cat-filters-date-label">
+          <span>Ou à partir d'une date précise</span>
+          <input id="dateFilter" type="date" aria-label="Date personnalisée">
+        </label>
+      </section>
+    </div>
+
+    <footer class="cat-filters-footer">
+      <button type="button" class="cat-filters-reset" id="resetFiltersBtn">Tout effacer</button>
+      <button type="button" class="cat-filters-apply" id="applyFiltersBtn">Voir les résultats</button>
+    </footer>
+  </aside>
 
   <footer class="site-footer">
     <div class="footer-content">
