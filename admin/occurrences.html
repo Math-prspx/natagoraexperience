@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Occurrences</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/admin-v2.css">
+</head>
+<body data-admin-page="occurrences">
+  <div class="admin-shell">
+    <aside class="sidebar">
+      <a class="brand" href="index.html">NATAGORA ADMIN</a>
+      <a class="back-site" href="../index.html">Retour au site public</a>
+      <nav class="side-nav" aria-label="Navigation admin">
+        <a data-nav="dashboard" href="index.html">Dashboard</a>
+        <a data-nav="walks" href="walks.html">Promenades</a>
+        <a data-nav="occurrences" href="occurrences.html">Occurrences</a>
+        <a data-nav="places" href="places.html">Reserves</a>
+        <a data-nav="taxonomy" href="taxonomie.html">Taxonomie</a>
+        <a data-nav="settings" href="settings.html">Parametres</a>
+      </nav>
+    </aside>
+
+    <div class="main">
+      <header class="main-header">
+        <div>
+          <h1>Occurrences</h1>
+          <p>Gestion des dates, capacites et statuts.</p>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <section class="panel">
+          <h2>Ajouter une occurrence</h2>
+          <form id="createOccurrenceForm" class="stack">
+            <div class="grid-4">
+              <label>Promenade
+                <select name="walk_id" id="walkSelect" required></select>
+              </label>
+              <label>Debut
+                <input type="datetime-local" name="starts_at" required>
+              </label>
+              <label>Fin
+                <input type="datetime-local" name="ends_at">
+              </label>
+              <label>Capacite max
+                <input type="number" name="max_capacity" min="1" step="1">
+              </label>
+            </div>
+            <div class="grid-3">
+              <label>Places disponibles
+                <input type="number" name="available_capacity" min="0" step="1">
+              </label>
+              <label>URL réservation
+                <input name="booking_url">
+              </label>
+              <label>URL iframe
+                <input name="booking_embed_url">
+              </label>
+            </div>
+            <button type="submit">Ajouter occurrence</button>
+          </form>
+        </section>
+
+        <section class="panel grid-4">
+          <label>Promenade
+            <select id="walkFilter"><option value="">Toutes</option></select>
+          </label>
+          <label>Statut
+            <select id="statusFilter">
+              <option value="">Tous</option>
+              <option value="published">Publie</option>
+              <option value="draft">Brouillon</option>
+              <option value="cancelled">Annule</option>
+            </select>
+          </label>
+          <label>Date min
+            <input id="fromDate" type="date">
+          </label>
+          <label>&nbsp;
+            <button id="reloadBtn" type="button">Rafraichir</button>
+          </label>
+        </section>
+
+        <section class="panel">
+          <h2>Liste des occurrences</h2>
+          <div id="occurrenceItems" class="list"></div>
+        </section>
+
+        <p id="status" class="status"></p>
+      </main>
+    </div>
+  </div>
+
+  <script src="../assets/js/admin-v2-common.js" defer></script>
+  <script src="../assets/js/admin-occurrences.js" defer></script>
+</body>
+</html>

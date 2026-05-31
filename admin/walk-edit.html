@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Edition promenade</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/admin-v2.css">
+</head>
+<body data-admin-page="walks">
+  <div class="admin-shell">
+    <aside class="sidebar">
+      <a class="brand" href="index.html">NATAGORA ADMIN</a>
+      <a class="back-site" href="../index.html">Retour au site public</a>
+      <nav class="side-nav" aria-label="Navigation admin">
+        <a data-nav="dashboard" href="index.html">Dashboard</a>
+        <a data-nav="walks" href="walks.html">Promenades</a>
+        <a data-nav="occurrences" href="occurrences.html">Occurrences</a>
+        <a data-nav="places" href="places.html">Reserves</a>
+        <a data-nav="taxonomy" href="taxonomie.html">Taxonomie</a>
+        <a data-nav="settings" href="settings.html">Parametres</a>
+      </nav>
+    </aside>
+
+    <div class="main">
+      <header class="main-header">
+        <div>
+          <h1 id="pageTitle">Nouvelle promenade</h1>
+          <p>Creation ou edition d'une fiche produit.</p>
+        </div>
+        <a class="btn btn-secondary" href="walks.html">Retour liste</a>
+      </header>
+
+      <main class="main-content">
+        <section class="panel">
+          <div class="subnav" role="tablist" aria-label="Sous-menu promenade">
+            <button id="tabInfo" type="button" class="tab-btn active" data-tab="info">Infos</button>
+            <button id="tabOccurrences" type="button" class="tab-btn" data-tab="occurrences">Occurrences</button>
+          </div>
+        </section>
+
+        <section id="infoSection" class="panel">
+          <form id="walkForm" class="stack">
+            <section class="form-group-block">
+              <h3 class="form-group-title">1. Famille, sous-catégories et lieu</h3>
+              <div class="grid-3">
+                <label>Famille
+                  <select name="family_code" id="familySelect" required></select>
+                </label>
+                <label>Sous-categorie
+                  <select name="subcategory_id" id="subcategorySelect"></select>
+                </label>
+                <label>Lieu
+                  <select name="place_id" id="placeSelect"></select>
+                </label>
+              </div>
+            </section>
+
+            <div class="form-divider" aria-hidden="true"></div>
+
+            <section class="form-group-block">
+              <h3 class="form-group-title">2. Titre et sous titre</h3>
+              <div class="grid-2">
+                <label>Titre
+                  <input name="title" required>
+                </label>
+                <label>Sous titre (section dates)
+                  <input name="dates_subtitle" placeholder="Sous titre">
+                </label>
+              </div>
+              <div class="grid-2">
+                <label>Slug
+                  <input name="slug">
+                </label>
+              </div>
+            </section>
+
+            <div class="form-divider" aria-hidden="true"></div>
+
+            <section class="form-group-block">
+              <h3 class="form-group-title">3. Duree, difficulte, distance, public, PMR, age minimum et prix affiche</h3>
+              <div class="grid-4">
+                <label>Duree (minutes)
+                  <input name="duration_minutes" type="number" min="0" step="1">
+                </label>
+                <label>Difficulte du parcours
+                  <input name="level_label">
+                </label>
+                <label>Distance (km)
+                  <input name="distance_km" type="number" min="0" step="0.1">
+                </label>
+                <label>Public
+                  <input name="target_public" placeholder="Familles, adultes, enfants...">
+                </label>
+              </div>
+              <div class="grid-3">
+                <label>Age minimum
+                  <input name="min_age" type="number" min="0" step="1">
+                </label>
+                <label>Prix affiche
+                  <input name="price_label">
+                </label>
+                <label>Acces PMR
+                  <select name="pmr_accessible">
+                    <option value="">Non renseigne</option>
+                    <option value="1">Oui</option>
+                    <option value="0">Non</option>
+                  </select>
+                </label>
+              </div>
+            </section>
+
+            <div class="form-divider" aria-hidden="true"></div>
+
+            <section class="form-group-block">
+              <h3 class="form-group-title">4. Image couverture</h3>
+              <div class="grid-2">
+                <label>Image couverture (URL)
+                  <input name="cover_image_url">
+                </label>
+                <label>Televerser image de couverture
+                  <input id="coverUploadInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif">
+                </label>
+              </div>
+              <div class="grid-2">
+                <label>Apercu couverture
+                  <img id="coverPreview" class="admin-image-preview hidden" alt="Apercu image couverture">
+                </label>
+              </div>
+            </section>
+
+            <div class="form-divider" aria-hidden="true"></div>
+
+            <section class="form-group-block">
+              <h3 class="form-group-title">5. Resume, description et image de contenu</h3>
+              <div class="grid-2">
+                <label>Resume
+                  <textarea name="summary"></textarea>
+                </label>
+                <label>Description
+                  <textarea name="description"></textarea>
+                </label>
+              </div>
+              <label>Infos pratiques (une ligne par info)
+                <textarea name="practical_info_lines" placeholder="Rendez-vous 15 min avant&#10;Chaussures de marche conseillees&#10;Prevoir eau et veste"></textarea>
+              </label>
+              <div class="grid-2">
+                <label>Image contenu (URL)
+                  <input name="content_image_url">
+                </label>
+                <label>Televerser image contenu
+                  <input id="contentImageUploadInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif">
+                </label>
+              </div>
+              <div class="grid-2">
+                <label>Apercu image contenu
+                  <img id="contentImagePreview" class="admin-image-preview hidden" alt="Apercu image contenu">
+                </label>
+              </div>
+            </section>
+
+            <div class="form-divider" aria-hidden="true"></div>
+
+            <section class="form-group-block">
+              <h3 class="form-group-title">6. Images de la galerie</h3>
+              <div class="grid-2">
+                <label>Televerser images galerie
+                  <input id="galleryUploadInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif" multiple>
+                </label>
+              </div>
+              <label>Galerie (une URL par ligne)
+                <textarea name="gallery_urls" id="galleryInput" placeholder="/assets/media/uploads/image1.jpg&#10;/assets/media/uploads/image2.jpg"></textarea>
+              </label>
+            </section>
+
+            <div class="form-divider" aria-hidden="true"></div>
+
+            <section class="form-group-block">
+              <h3 class="form-group-title">7. Type de reservation et URLs</h3>
+              <div class="grid-3">
+                <label>Mode reservation
+                  <select name="booking_mode">
+                    <option value="link">Lien externe</option>
+                    <option value="iframe">Iframe</option>
+                    <option value="hybrid">Hybride</option>
+                  </select>
+                </label>
+                <label>URL réservation
+                  <input name="booking_url" placeholder="https://www.billetweb.fr/...">
+                </label>
+                <label>URL iframe
+                  <input name="booking_embed_url" placeholder="https://www.billetweb.fr/...">
+                </label>
+              </div>
+              <div class="grid-2">
+                <label>Statut
+                  <select name="status">
+                    <option value="draft">Brouillon</option>
+                    <option value="published">Publie</option>
+                    <option value="archived">Archive</option>
+                  </select>
+                </label>
+              </div>
+            </section>
+
+            <div class="grid-2">
+              <button id="saveBtn" type="submit">Enregistrer</button>
+              <a class="btn btn-secondary" href="walks.html">Annuler</a>
+            </div>
+          </form>
+        </section>
+
+        <section id="occurrencesSection" class="panel hidden">
+          <h2>Ajouter une occurrence a cette promenade</h2>
+          <form id="createOccurrenceForm" class="stack">
+            <div class="grid-4">
+              <label>Debut
+                <input type="datetime-local" name="starts_at" required>
+              </label>
+              <label>Fin
+                <input type="datetime-local" name="ends_at">
+              </label>
+              <label>Capacite max
+                <input type="number" name="max_capacity" min="1" step="1">
+              </label>
+              <label>Places disponibles
+                <input type="number" name="available_capacity" min="0" step="1">
+              </label>
+            </div>
+            <div class="grid-3">
+              <label>URL réservation
+                <input name="booking_url" placeholder="https://www.billetweb.fr/...">
+              </label>
+              <label>URL iframe
+                <input name="booking_embed_url" placeholder="https://www.billetweb.fr/...">
+              </label>
+              <label>Statut
+                <select name="status">
+                  <option value="published">Publie</option>
+                  <option value="draft">Brouillon</option>
+                  <option value="cancelled">Annule</option>
+                </select>
+              </label>
+            </div>
+            <button type="submit">Ajouter occurrence</button>
+          </form>
+
+          <h2>Occurrences existantes</h2>
+          <div id="occurrenceList" class="list"></div>
+        </section>
+
+        <p id="status" class="status"></p>
+      </main>
+    </div>
+  </div>
+
+  <script src="../assets/js/admin-v2-common.js" defer></script>
+  <script src="../assets/js/admin-walk-edit.js" defer></script>
+</body>
+</html>

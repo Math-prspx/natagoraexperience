@@ -1,0 +1,39 @@
+# Local config & secrets
+api/config.php
+.env
+.env.local
+.env.*.local
+
+# Local databases
+database/local.sqlite
+database/*.sqlite-journal
+database/*.sqlite-wal
+database/*.sqlite-shm
+
+# Uploads (user-generated content)
+assets/media/uploads/*
+!assets/media/uploads/.gitkeep
+!assets/media/uploads/README.md
+
+# Build artefacts
+node_modules/
+vendor/
+dist/
+build/
+
+# Logs
+*.log
+logs/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temp / scratch
+_*.ps1
+_*.php
+tmp/

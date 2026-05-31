@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Parametres</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/admin-v2.css">
+</head>
+<body data-admin-page="settings">
+  <div class="admin-shell">
+    <aside class="sidebar">
+      <a class="brand" href="index.html">NATAGORA ADMIN</a>
+      <a class="back-site" href="../index.html">Retour au site public</a>
+      <nav class="side-nav" aria-label="Navigation admin">
+        <a data-nav="dashboard" href="index.html">Dashboard</a>
+        <a data-nav="walks" href="walks.html">Promenades</a>
+        <a data-nav="occurrences" href="occurrences.html">Occurrences</a>
+        <a data-nav="places" href="places.html">Reserves</a>
+        <a data-nav="taxonomy" href="taxonomie.html">Taxonomie</a>
+        <a data-nav="settings" href="settings.html">Parametres</a>
+      </nav>
+    </aside>
+
+    <div class="main">
+      <header class="main-header">
+        <div>
+          <h1>Parametres</h1>
+          <p>Zone reservee aux options globales et integrations.</p>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <section class="panel">
+          <h2>Reservation externe (Billetweb)</h2>
+          <p class="muted">Par promenade, utiliser le mode:</p>
+          <ul>
+            <li><strong>link</strong> pour lien externe uniquement</li>
+            <li><strong>iframe</strong> pour embed direct</li>
+            <li><strong>hybrid</strong> pour iframe + fallback lien</li>
+          </ul>
+        </section>
+
+        <section class="panel">
+          <h2>Roadmap admin</h2>
+          <ul>
+            <li>Gestion des droits d acces</li>
+            <li>Historique des modifications</li>
+            <li>Configuration globale des emails et contacts</li>
+          </ul>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="../assets/js/admin-v2-common.js" defer></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => window.AdminV2.activateNav());
+  </script>
+</body>
+</html>
