@@ -90,20 +90,7 @@
   flex-wrap: wrap;
 }
 
-.btn-primary {
-  border: 0;
-  border-radius: var(--radius-sm);
-  padding: 12px 16px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  background: var(--color-cta);
-  color: #ffffff;
-}
-
-.btn-primary:hover {
-  background: var(--color-cta-hover);
-}
+/* .btn-primary : défini dans style.css (système .cta) */
 
 .reserve-sites,
 .reserve-experience {

@@ -8,7 +8,7 @@
   --color-muted: #737373;
   --color-surface: #f5f5f5;
   --color-cta: #a2b21c;
-  --color-cta-hover: #b02528;
+  --color-cta-hover: #8a9918;
   --color-cta-text: #ffffff;
 
   --nav-height: 10vh;
@@ -27,10 +27,34 @@
   --section-pad-x: 80px;
   --section-pad-y-lg: 140px;
   --section-pad-y-md: 120px;
+
+  /* --- Design tokens CTA / boutons (Phase 2 UI) ---
+     2 tailles uniquement : md (14px) par défaut, lg (16px) pour CTA proéminents. */
+  --cta-font-md: 14px;
+  --cta-font-lg: 16px;
+  --cta-pad-md: 12px 20px;
+  --cta-pad-lg: 14px 28px;
+  --cta-radius: var(--radius-sm);
+  --cta-weight: 700;
+  --cta-letter-spacing: 0.04em;
+  --cta-line-height: 1;
+  --cta-transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
 }
 
 html {
   font-size: var(--font-fluid-root);
+  scroll-behavior: smooth;
+  overflow-x: clip; /* évite le scroll horizontal dû aux 100vw incluant la scrollbar */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 * {
@@ -43,11 +67,81 @@ body {
   font-family: var(--font-body);
   color: var(--color-text);
   background: #ffffff;
+  overflow-x: clip;
 }
 
 a {
   color: inherit;
   text-decoration: none;
+}
+
+/* Focus visible global (clavier uniquement, n'affecte pas la souris) */
+:focus-visible {
+  outline: 2px solid var(--color-cta);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+:focus:not(:focus-visible) { outline: none; }
+
+/* Skip link accessibilité */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 12px;
+  z-index: 9999;
+  padding: 10px 16px;
+  background: var(--color-ink);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 14px;
+  transition: top 0.2s ease;
+}
+.skip-link:focus { top: 12px; }
+
+/* États de chargement (utilisés sur grilles/listes async) */
+[aria-busy="true"] { cursor: progress; }
+
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: #ececec;
+  border-radius: var(--radius-sm);
+  color: transparent;
+}
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.6) 50%, transparent 100%);
+  transform: translateX(-100%);
+  animation: skeleton-shimmer 1.3s ease-in-out infinite;
+}
+@keyframes skeleton-shimmer {
+  to { transform: translateX(100%); }
+}
+
+.skeleton-card {
+  min-height: 320px;
+  border-radius: var(--radius-lg);
+}
+
+.is-loading { opacity: 0.55; pointer-events: none; }
+
+/* Reveal-on-scroll (utilisé par main.js via IntersectionObserver) */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
 }
 
 .hero {
@@ -94,21 +188,29 @@ a {
 }
 
 .nav-cta {
-  display: flex;
-  padding: var(--space-4) 18px;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
-  border-radius: var(--radius-sm);
+  padding: var(--cta-pad-lg);
+  border-radius: var(--cta-radius);
   background: var(--color-cta);
   color: var(--color-cta-text);
+  font-size: var(--cta-font-lg);
+  font-weight: var(--cta-weight);
+  letter-spacing: var(--cta-letter-spacing);
+  line-height: var(--cta-line-height);
+  text-transform: uppercase;
   text-decoration: none;
-  font-weight: 700;
-  line-height: 1;
+  transition: var(--cta-transition);
 }
-.nav-cta:hover{
-    color: var(--color-cta-text);
-    background-color: var(--color-cta-hover);
+.nav-cta:hover {
+  color: var(--color-cta-text);
+  background-color: var(--color-cta-hover);
+}
+.nav-cta:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
 }
 
 .hamburger {
@@ -371,18 +473,19 @@ a {
 
 .formula-cta {
   margin-top: 1vw;
-  height: 48px;
-  padding: 14px 18px;
-  border-radius: var(--radius-sm);
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  font-size: 14px;
-  font-weight: 700;
+  padding: var(--cta-pad-md);
+  border-radius: var(--cta-radius);
+  font-size: var(--cta-font-md);
+  font-weight: var(--cta-weight);
+  letter-spacing: var(--cta-letter-spacing);
+  line-height: var(--cta-line-height);
   text-transform: uppercase;
   color: #ffffff;
   text-decoration: none;
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  transition: var(--cta-transition);
 }
 
 .formula-cta-discovery {
@@ -578,18 +681,25 @@ a {
 }
 
 .reserve-cta {
-  height: 48px;
-  padding: 14px 18px;
-  border-radius: var(--radius-sm);
-  border: 1px solid #ffffff;
-  color: #ffffff;
-  text-decoration: none;
-  text-transform: uppercase;
-  font-size: 14px;
-  font-weight: 700;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  padding: var(--cta-pad-md);
+  border: 1px solid #ffffff;
+  border-radius: var(--cta-radius);
+  background: transparent;
+  color: #ffffff;
+  font-size: var(--cta-font-md);
+  font-weight: var(--cta-weight);
+  letter-spacing: var(--cta-letter-spacing);
+  line-height: var(--cta-line-height);
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: var(--cta-transition);
+}
+.reserve-cta:hover {
+  background: #ffffff;
+  color: var(--color-ink);
 }
 
 .hero-content {
@@ -634,24 +744,29 @@ a {
 }
 
 .hero-cta {
-  display: flex;
-  padding: 14px 18px;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
   align-self: center;
+  padding: var(--cta-pad-lg);
   border: 0;
-  border-radius: var(--radius-sm);
+  border-radius: var(--cta-radius);
   background: var(--color-cta);
   color: #ffffff;
+  font-size: var(--cta-font-lg);
+  font-weight: var(--cta-weight);
+  letter-spacing: var(--cta-letter-spacing);
+  line-height: var(--cta-line-height);
+  text-transform: uppercase;
   text-decoration: none;
-  font-weight: 700;
-  transition: filter 0.2s ease;
+  transition: var(--cta-transition);
 }
 
 .hero-cta:hover {
   color: #ffffff;
   background-color: var(--color-cta-hover);
+  transform: translateY(-2px);
 }
 
 @media (max-width: 640px) {
@@ -660,8 +775,8 @@ a {
   }
 
   .nav-cta {
-    padding: 8px 10px;
-    font-size: 0.85rem;
+    padding: 10px 14px;
+    font-size: var(--cta-font-md);
   }
 
   .hamburger {
@@ -1007,16 +1122,18 @@ a {
 }
 
 .agenda-cta {
-  height: 48px;
-  border-radius: var(--radius-sm);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 14px 18px;
-  font-size: 87.5%;
-  font-weight: 700;
+  padding: var(--cta-pad-md);
+  border-radius: var(--cta-radius);
+  font-size: var(--cta-font-md);
+  font-weight: var(--cta-weight);
+  letter-spacing: var(--cta-letter-spacing);
+  line-height: var(--cta-line-height);
   text-transform: uppercase;
   text-decoration: none;
+  transition: var(--cta-transition);
 }
 
 .agenda-cta-primary {
@@ -1029,8 +1146,11 @@ a {
 }
 
 .agenda-cta-secondary {
+  background: transparent;
   border: 1px solid #737373;
   color: #737373;
+  /* Compense la bordure pour matcher la hauteur du primary. */
+  padding: calc(12px - 1px) calc(20px - 1px);
 }
 .agenda-cta-secondary:hover {
   background-color: #000000;
@@ -1282,16 +1402,17 @@ a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 48px;
-  padding: 14px 24px;
+  padding: var(--cta-pad-md);
   background: #ffffff;
   color: var(--color-ink);
-  font-size: 87.5%;
-  font-weight: 700;
+  font-size: var(--cta-font-md);
+  font-weight: var(--cta-weight);
+  letter-spacing: var(--cta-letter-spacing);
+  line-height: var(--cta-line-height);
   text-transform: uppercase;
   text-decoration: none;
-  border-radius: var(--radius-sm);
-  transition: background 0.3s ease, color 0.3s ease;
+  border-radius: var(--cta-radius);
+  transition: var(--cta-transition);
 }
 
 .resource-card-cta:hover {
@@ -1596,56 +1717,110 @@ body.menu-open {
   flex-wrap: wrap;
 }
 
-/* Standard Buttons */
-.btn-primary {
+/* =========================================================================
+   Système CTA unifié (Phase 2 UI)
+   - Classe de base : .cta
+   - Tailles        : .cta (md, 14px par défaut) | .cta-lg (16px)
+   - Style          : .cta-primary | .cta-secondary | .cta-white
+   - Couleur marque : .cta-discovery | .cta-theme | .cta-custom
+   Les classes legacy (.btn-primary, .nav-cta, .formula-cta, .hero-chip,
+   .agenda-cta, .reserve-cta, .resource-card-cta, .occurrence-book, .sm-cta-button)
+   sont conservées et alignées sur le même set de valeurs pour ne pas casser
+   le markup existant.
+   ========================================================================= */
+
+.cta,
+.btn-primary,
+.btn-secondary,
+.btn-white,
+.sm-cta-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: var(--cta-pad-lg);
   border: 0;
-  border-radius: var(--radius-sm);
-  padding: 14px 28px;
-  font-weight: 700;
+  border-radius: var(--cta-radius);
+  font-family: inherit;
+  font-size: var(--cta-font-lg);
+  font-weight: var(--cta-weight);
+  letter-spacing: var(--cta-letter-spacing);
+  line-height: var(--cta-line-height);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  background: var(--color-cta);
-  color: #ffffff;
   text-decoration: none;
-  font-size: 16px;
-  display: inline-block;
-  transition: background 0.3s ease, transform 0.3s ease;
   cursor: pointer;
+  transition: var(--cta-transition);
 }
 
-.btn-primary:hover {
-  background: #8a9918;
+/* Variantes de style */
+.cta-primary,
+.btn-primary,
+.sm-cta-button {
+  background: var(--color-cta);
+  color: var(--color-cta-text);
+}
+.cta-primary:hover,
+.btn-primary:hover,
+.sm-cta-button:hover {
+  background: var(--color-cta-hover);
+  color: var(--color-cta-text);
   transform: translateY(-2px);
 }
 
+.cta-secondary,
 .btn-secondary {
-  border: 1px solid #b5beaf;
-  border-radius: var(--radius-sm);
-  padding: 13px 26px;
-  text-decoration: none;
-  text-transform: uppercase;
-  font-weight: 700;
-  font-size: 16px;
-  color: #4e524e;
   background: #ffffff;
-  display: inline-block;
-  transition: color 0.3s ease, background-color 0.3s ease;
-  cursor: pointer;
+  color: #4e524e;
+  border: 1px solid #b5beaf;
+  /* Compense la bordure pour conserver la même hauteur visuelle. */
+  padding: calc(14px - 1px) calc(28px - 1px);
 }
-
+.cta-secondary:hover,
 .btn-secondary:hover {
+  background: var(--color-ink);
   color: #ffffff;
-  background: #0f1612;
 }
 
+.cta-white,
 .btn-white {
   background: #ffffff;
   color: var(--color-ink);
 }
-
+.cta-white:hover,
 .btn-white:hover {
   background: var(--color-ink);
   color: #ffffff;
+}
+
+/* Variantes de taille */
+.cta {
+  padding: var(--cta-pad-md);
+  font-size: var(--cta-font-md);
+}
+.cta.cta-secondary {
+  padding: calc(12px - 1px) calc(20px - 1px);
+}
+.cta-lg {
+  padding: var(--cta-pad-lg);
+  font-size: var(--cta-font-lg);
+}
+.cta-lg.cta-secondary {
+  padding: calc(14px - 1px) calc(28px - 1px);
+}
+
+/* Variantes de couleur de marque (formules / chips catalogue) */
+.cta-discovery { background: #a2b21c; color: #ffffff; }
+.cta-theme     { background: #3e502e; color: #ffffff; }
+.cta-custom    { background: #457d75; color: #ffffff; }
+
+/* Focus visible global pour tous les CTA */
+.cta:focus-visible,
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+.btn-white:focus-visible,
+.sm-cta-button:focus-visible {
+  outline: 2px solid var(--color-cta);
+  outline-offset: 3px;
 }
 
 /* Content Sections */
@@ -1862,5 +2037,145 @@ body.menu-open {
 
   .footer-logo img {
     max-width: 150px;
+  }
+}
+
+/* ========================================
+   POLISH UI — Phase 2 step finale
+   Hero entrance, card lift, empty/error states, tap targets
+   ======================================== */
+
+/* Hero entrance : fade + slide-up des éléments du contenu */
+@keyframes hero-enter {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.hero-content > * {
+  opacity: 0;
+  animation: hero-enter 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.hero-content > *:nth-child(1) { animation-delay: 0.15s; }
+.hero-content > *:nth-child(2) { animation-delay: 0.30s; }
+.hero-content > *:nth-child(3) { animation-delay: 0.45s; }
+.hero-content > *:nth-child(4) { animation-delay: 0.60s; }
+.hero-content > *:nth-child(5) { animation-delay: 0.75s; }
+
+/* Logo footer : léger lift */
+.footer-logo img {
+  transition: transform 0.3s ease;
+}
+.footer-logo a:hover img,
+.footer-logo:hover img {
+  transform: translateY(-2px);
+}
+
+/* Card hover homogène : lift + shadow renforcée */
+.agenda-card,
+.reserve-card,
+.resource-card {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+}
+.agenda-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.18);
+}
+.reserve-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.25);
+}
+.resource-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Empty state & error state unifiés */
+.state-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 3rem 1.5rem;
+  text-align: center;
+  color: #4a4a4a;
+  font-size: 16px;
+  line-height: 1.4;
+  border: 1px dashed rgba(0, 0, 0, 0.12);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.6);
+  grid-column: 1 / -1;
+  width: 100%;
+}
+.state-message-icon {
+  width: 48px;
+  height: 48px;
+  opacity: 0.6;
+}
+.state-message-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #2a2a2a;
+}
+.state-message-text {
+  margin: 0;
+  max-width: 40ch;
+}
+.state-message-retry {
+  margin-top: 8px;
+  padding: 10px 18px;
+  font-size: var(--cta-font-md);
+  font-weight: var(--cta-weight);
+  letter-spacing: var(--cta-letter-spacing);
+  text-transform: uppercase;
+  background: var(--color-cta);
+  color: #fff;
+  border: 0;
+  border-radius: var(--cta-radius);
+  cursor: pointer;
+  transition: var(--cta-transition);
+}
+.state-message-retry:hover {
+  background: var(--color-cta-hover);
+  transform: translateY(-2px);
+}
+.state-message-error {
+  border-color: rgba(176, 37, 41, 0.25);
+  background: rgba(176, 37, 41, 0.04);
+  color: #6a2225;
+}
+
+/* Mobile : tap targets accessibilité (min 44x44) sur liens nav et footer */
+@media (max-width: 768px) {
+  .footer-social-link {
+    width: 44px;
+    height: 44px;
+  }
+  .nav-cta,
+  .reserve-cta,
+  .resource-card-cta,
+  .hero-cta,
+  .formula-cta {
+    min-height: 44px;
+  }
+  /* Désactive animations hover sur écrans tactiles (évite états collants) */
+  @media (hover: none) {
+    .agenda-card:hover,
+    .reserve-card:hover,
+    .resource-card:hover,
+    .formula-card:hover {
+      transform: none;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-content > * {
+    opacity: 1;
+    animation: none;
+  }
+  .agenda-card:hover,
+  .reserve-card:hover,
+  .resource-card:hover {
+    transform: none;
   }
 }

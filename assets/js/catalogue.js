@@ -1,5 +1,5 @@
 const API_BASE = window.PublicUtils.apiBaseUrl();
-const { buildWalkCardMarkup } = window.PublicUtils;
+const { buildWalkCardMarkup, debounce, withLoadingState, revealAll, renderStateMessage } = window.PublicUtils;
 
 const familyFilter = document.getElementById('familyFilter');
 const subcategoryFilter = document.getElementById('subcategoryFilter');
@@ -68,29 +68,38 @@ function renderWalkCard(item, index) {
 }
 
 async function loadWalks() {
-  walksGrid.innerHTML = '';
   syncQuickFamilyButtons();
 
-  const params = new URLSearchParams();
-  if (familyFilter.value) params.set('family', familyFilter.value);
-  if (subcategoryFilter.value) params.set('subcategory', subcategoryFilter.value);
-  if (placeFilter.value) params.set('place', placeFilter.value);
-  if (dateFilter.value) params.set('from_date', dateFilter.value + ' 00:00:00');
+  await withLoadingState(walksGrid, async () => {
+    const params = new URLSearchParams();
+    if (familyFilter.value) params.set('family', familyFilter.value);
+    if (subcategoryFilter.value) params.set('subcategory', subcategoryFilter.value);
+    if (placeFilter.value) params.set('place', placeFilter.value);
+    if (dateFilter.value) params.set('from_date', dateFilter.value + ' 00:00:00');
 
-  const data = await fetchJson(API_BASE + '/public/walks?' + params.toString());
-  if (resultsCount) {
-    const count = data.items.length;
-    resultsCount.textContent = count > 1 ? `${count} promenades trouvées` : `${count} promenade trouvée`;
-  }
+    const data = await fetchJson(API_BASE + '/public/walks?' + params.toString());
+    if (resultsCount) {
+      const count = data.items.length;
+      resultsCount.textContent = count > 1 ? `${count} promenades trouvées` : `${count} promenade trouvée`;
+    }
 
-  if (data.items.length === 0) {
-    emptyState.classList.remove('hidden');
-    return;
-  }
-
-  emptyState.classList.add('hidden');
-  data.items.forEach((item, index) => walksGrid.appendChild(renderWalkCard(item, index)));
+    walksGrid.innerHTML = '';
+    if (data.items.length === 0) {
+      emptyState.classList.add('hidden');
+      renderStateMessage(walksGrid, {
+        title: 'Aucun résultat',
+        text: 'Aucune expérience ne correspond à vos filtres. Essayez d’élargir vos critères.',
+        variant: 'empty'
+      });
+      return;
+    }
+    emptyState.classList.add('hidden');
+    data.items.forEach((item, index) => walksGrid.appendChild(renderWalkCard(item, index)));
+    revealAll(walksGrid, '.agenda-card');
+  }, { skeletonCount: 6 });
 }
+
+const debouncedLoadWalks = debounce(loadWalks, 250);
 
 async function bootstrap() {
   try {
@@ -99,16 +108,21 @@ async function bootstrap() {
     await loadWalks();
   } catch (error) {
     console.error(error);
-    emptyState.textContent = 'Impossible de charger le catalogue pour le moment.';
-    emptyState.classList.remove('hidden');
+    emptyState.classList.add('hidden');
+    renderStateMessage(walksGrid, {
+      title: 'Chargement impossible',
+      text: 'Nous n’avons pas pu récupérer le catalogue. Vérifiez votre connexion ou réessayez.',
+      variant: 'error',
+      onRetry: () => bootstrap()
+    });
   }
 }
 
 refreshBtn?.addEventListener('click', loadWalks);
-familyFilter?.addEventListener('change', loadWalks);
-subcategoryFilter?.addEventListener('change', loadWalks);
-placeFilter?.addEventListener('change', loadWalks);
-dateFilter?.addEventListener('change', loadWalks);
+familyFilter?.addEventListener('change', debouncedLoadWalks);
+subcategoryFilter?.addEventListener('change', debouncedLoadWalks);
+placeFilter?.addEventListener('change', debouncedLoadWalks);
+dateFilter?.addEventListener('change', debouncedLoadWalks);
 
 quickFamilyButtons.forEach((button) => {
   button.addEventListener('click', () => {

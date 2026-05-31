@@ -12,20 +12,7 @@
   <link rel="stylesheet" href="assets/css/reserves.css">
 </head>
 <body class="reserve-page">
-  <nav class="hero-nav" aria-label="Navigation principale">
-    <a class="nav-brand" href="index.html" aria-label="Accueil Natagora Xperience">
-      <img src="img/logo.png" alt="Logo Natagora Xperience">
-    </a>
-
-    <div class="nav-actions">
-      <a class="nav-cta" href="catalogue.html">Découvrir l'expérience</a>
-      <button class="hamburger" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="overlay-nav">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-    </div>
-  </nav>
+  <div id="site-nav-root" data-cta-label="Découvrir l'expérience" data-cta-href="catalogue.html"></div>
 
   <main class="reserve-main">
     <section class="reserve-hero">
@@ -80,26 +67,6 @@
       </div>
     </section>
   </main>
-
-  <div id="overlay-backdrop" class="overlay-backdrop" aria-hidden="true"></div>
-
-  <div id="overlay-nav" class="overlay-nav hidden" aria-hidden="true">
-    <button id="close-overlay" class="overlay-close">&times;</button>
-    <div class="overlay-nav-content">
-      <div class="overlay-nav-links-left">
-        <a class="overlay-main-link" href="catalogue.html?family=decouverte">Découverte</a>
-        <a class="overlay-main-link" href="catalogue.html?family=thematique">Thématique</a>
-        <a class="overlay-main-link" href="catalogue.html">Naturalistes</a>
-        <a class="overlay-main-link" href="sur-mesure.html">Sur mesure</a>
-      </div>
-      <div class="overlay-nav-links-right">
-        <a class="overlay-secondary-link" href="reserves.html">Les reserves</a>
-        <a class="overlay-secondary-link" href="a-propos.html">A propos</a>
-        <a class="overlay-secondary-link" href="en-pratique.html">En pratique</a>
-        <a class="overlay-secondary-link" href="contact.html">Contact</a>
-      </div>
-    </div>
-  </div>
 
   <footer class="site-footer">
     <div class="footer-content">

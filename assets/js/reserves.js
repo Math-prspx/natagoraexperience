@@ -45,11 +45,16 @@ document.addEventListener('DOMContentLoaded', () => {
     items = Array.isArray(list) && list.length > 0 ? list : [];
     
     if (items.length === 0) {
-      track.innerHTML = '<p style="padding: 2rem; text-align: center;">Aucune réserve disponible pour le moment.</p>';
+      window.PublicUtils.renderStateMessage(track, {
+        title: 'Aucune réserve',
+        text: 'Les réserves seront publiées prochainement.',
+        variant: 'empty'
+      });
       return;
     }
     
     track.innerHTML = items.map((item) => buildReserveCardMarkup(item, '/img/chouette.jpg')).join('');
+    window.PublicUtils.revealAll(track, '.reserve-card');
     index = 0;
     updateSlider();
   };
@@ -63,6 +68,10 @@ document.addEventListener('DOMContentLoaded', () => {
   nextBtn?.addEventListener('click', () => move(1));
   window.addEventListener('resize', updateSlider);
 
+  const { renderSkeletons } = window.PublicUtils;
+  renderSkeletons(track, 3);
+  track.setAttribute('aria-busy', 'true');
+
   fetch(API_BASE + '/public/places')
     .then((response) => {
       if (!response.ok) {
@@ -71,5 +80,13 @@ document.addEventListener('DOMContentLoaded', () => {
       return response.json();
     })
     .then((data) => render(data.items || []))
-    .catch(() => render(defaultItems));
+    .catch(() => {
+      window.PublicUtils.renderStateMessage(track, {
+        title: 'Chargement impossible',
+        text: 'Nous n’avons pas pu récupérer les réserves. Réessayez dans un instant.',
+        variant: 'error',
+        onRetry: () => window.location.reload()
+      });
+    })
+    .finally(() => track.setAttribute('aria-busy', 'false'));
 });
