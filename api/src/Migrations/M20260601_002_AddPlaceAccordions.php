@@ -32,14 +32,23 @@ class M20260601_002_AddPlaceAccordions implements MigrationInterface
                 $pdo->exec("ALTER TABLE places ADD COLUMN accordion2_text TEXT NULL");
             }
         } else {
-            // MySQL
-            $pdo->exec("
-                ALTER TABLE places
-                    ADD COLUMN IF NOT EXISTS accordion1_title VARCHAR(255) NULL,
-                    ADD COLUMN IF NOT EXISTS accordion1_text  TEXT NULL,
-                    ADD COLUMN IF NOT EXISTS accordion2_title VARCHAR(255) NULL,
-                    ADD COLUMN IF NOT EXISTS accordion2_text  TEXT NULL
-            ");
+            // MySQL — pas de IF NOT EXISTS sur ADD COLUMN avant MySQL 8.0.3
+            $cols = array_column(
+                $pdo->query("SHOW COLUMNS FROM places")->fetchAll(),
+                'Field'
+            );
+            if (!in_array('accordion1_title', $cols, true)) {
+                $pdo->exec("ALTER TABLE places ADD COLUMN accordion1_title VARCHAR(255) NULL");
+            }
+            if (!in_array('accordion1_text', $cols, true)) {
+                $pdo->exec("ALTER TABLE places ADD COLUMN accordion1_text TEXT NULL");
+            }
+            if (!in_array('accordion2_title', $cols, true)) {
+                $pdo->exec("ALTER TABLE places ADD COLUMN accordion2_title VARCHAR(255) NULL");
+            }
+            if (!in_array('accordion2_text', $cols, true)) {
+                $pdo->exec("ALTER TABLE places ADD COLUMN accordion2_text TEXT NULL");
+            }
         }
     }
 
