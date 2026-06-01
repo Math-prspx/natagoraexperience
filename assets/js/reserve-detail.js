@@ -96,11 +96,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         <section class="reserve-metrics" aria-label="Informations clés réserve">
           <article class="reserve-metric">
-            <span class="reserve-metric-icon">Map</span>
-            <p class="reserve-metric-label">${mapLabel}</p>
-            <p class="reserve-metric-value">${mapValue}</p>
-          </article>
-          <article class="reserve-metric">
             <span class="reserve-metric-icon">~</span>
             <p class="reserve-metric-label">Superficie</p>
             <p class="reserve-metric-value">${areaValue}</p>
@@ -111,9 +106,9 @@ document.addEventListener('DOMContentLoaded', () => {
             <p class="reserve-metric-value">${createdValue}</p>
           </article>
           <article class="reserve-metric">
-            <span class="reserve-metric-icon">Bio</span>
-            <p class="reserve-metric-label">Espèces</p>
-            <p class="reserve-metric-value">${speciesValue}</p>
+            <span class="reserve-metric-icon">Map</span>
+            <p class="reserve-metric-label">Régionale</p>
+            <p class="reserve-metric-value">${mapValue}</p>
           </article>
         </section>
 
