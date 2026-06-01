@@ -47,4 +47,14 @@ class M20260601_002_AddPlaceAccordions implements MigrationInterface
     {
         return '20260601_002';
     }
+
+    public function getDescription(): string
+    {
+        return 'Add accordion1_title, accordion1_text, accordion2_title, accordion2_text to places';
+    }
+
+    public function down(PDO $pdo): void
+    {
+        // SQLite ne supporte pas DROP COLUMN avant 3.35 — on laisse vide
+    }
 }
