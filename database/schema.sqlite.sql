@@ -54,7 +54,7 @@ CREATE TABLE walks (
     min_age INTEGER,
     price_label TEXT,
     cover_image_url TEXT,
-    content_image_url TEXT,
+    intro_image_url TEXT,
     gallery_json TEXT,
     booking_mode TEXT NOT NULL DEFAULT 'link' CHECK (booking_mode IN ('link', 'iframe', 'hybrid')),
     booking_url TEXT,

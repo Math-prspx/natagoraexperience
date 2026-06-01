@@ -52,7 +52,7 @@ CREATE TABLE walks (
     min_age INT NULL,
     price_label VARCHAR(100) NULL,
     cover_image_url VARCHAR(500) NULL,
-    content_image_url VARCHAR(500) NULL,
+    intro_image_url VARCHAR(500) NULL,
     gallery_json JSON NULL,
     booking_mode ENUM('link','iframe','hybrid') NOT NULL DEFAULT 'link',
     booking_url VARCHAR(500) NULL,

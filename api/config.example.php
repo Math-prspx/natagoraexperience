@@ -17,4 +17,13 @@ return [
         'base_url' => '/api',
         'default_locale' => 'fr',
     ],
+    'auth' => [
+        // Admin login credentials
+        // Generate hash: php -r "echo password_hash('your_password', PASSWORD_BCRYPT);"
+        'username'      => 'admin',
+        'password_hash' => 'REPLACE_WITH_BCRYPT_HASH',
+        // Generate secret: php -r "echo bin2hex(random_bytes(32));"
+        'secret'        => 'REPLACE_WITH_RANDOM_32_CHAR_SECRET',
+        'token_ttl'     => 28800, // 8 hours in seconds
+    ],
 ];

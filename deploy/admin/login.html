@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Connexion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/admin-v2.css">
+  <style>
+    .login-wrap {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg);
+    }
+    .login-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 40px 48px;
+      width: 100%;
+      max-width: 400px;
+    }
+    .login-card h1 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin: 0 0 24px;
+    }
+    .login-card .stack { gap: 16px; }
+    .login-card label {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+    .login-card input {
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      font-size: 0.95rem;
+      background: var(--bg);
+    }
+  </style>
+</head>
+<body data-admin-page="login">
+  <div class="login-wrap">
+    <div class="login-card">
+      <h1>NATAGORA ADMIN</h1>
+      <form id="loginForm" class="stack">
+        <label>Identifiant
+          <input type="text" name="username" autocomplete="username" required>
+        </label>
+        <label>Mot de passe
+          <input type="password" name="password" autocomplete="current-password" required>
+        </label>
+        <button type="submit" id="loginBtn">Connexion</button>
+        <p id="loginError" class="status is-error" style="display:none"></p>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      // If already logged in, redirect to dashboard
+      if (localStorage.getItem('admin_token')) {
+        window.location.replace('index.html');
+      }
+
+      const API_BASE = (() => {
+        const pathname = window.location.pathname;
+        const base = pathname.replace(/\/admin\/[^/]*$/, '').replace(/\/admin$/, '');
+        return (base || '') + '/api';
+      })();
+
+      const form = document.getElementById('loginForm');
+      const btn = document.getElementById('loginBtn');
+      const errorEl = document.getElementById('loginError');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        btn.disabled = true;
+        btn.textContent = 'Connexion...';
+        errorEl.style.display = 'none';
+
+        const data = {
+          username: form.elements.username.value.trim(),
+          password: form.elements.password.value,
+        };
+
+        try {
+          const response = await fetch(API_BASE + '/admin/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+          });
+
+          const payload = await response.json().catch(() => ({}));
+
+          if (!response.ok) {
+            throw new Error(payload.error || 'Erreur de connexion.');
+          }
+
+          localStorage.setItem('admin_token', payload.token);
+          window.location.replace('index.html');
+        } catch (err) {
+          errorEl.textContent = err.message;
+          errorEl.style.display = 'block';
+          btn.disabled = false;
+          btn.textContent = 'Connexion';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
