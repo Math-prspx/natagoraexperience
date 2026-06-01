@@ -25,11 +25,9 @@ CREATE TABLE places (
     long_description_fr TEXT,
     cover_image_url TEXT,
     intro_image_url TEXT,
-    metric_map_label TEXT,
     metric_map_value TEXT,
     area_ha INTEGER,
     created_year INTEGER,
-    species_count INTEGER,
     specificities_json TEXT,
     created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP

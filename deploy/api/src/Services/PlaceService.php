@@ -21,8 +21,8 @@ class PlaceService
         $rows = $this->pdo->query(
             'SELECT
                 id, slug, name_fr, headline_fr, short_description_fr, long_description_fr,
-                cover_image_url, intro_image_url, metric_map_label, metric_map_value,
-                area_ha, created_year, species_count, specificities_json,
+                cover_image_url, intro_image_url, metric_map_value,
+                area_ha, created_year, specificities_json,
                 accordion1_title, accordion1_text, accordion2_title, accordion2_text
             FROM places
             ORDER BY name_fr ASC'
@@ -44,8 +44,8 @@ class PlaceService
         $stmt = $this->pdo->prepare(
             'SELECT
                 id, slug, name_fr, headline_fr, short_description_fr, long_description_fr,
-                cover_image_url, intro_image_url, metric_map_label, metric_map_value,
-                area_ha, created_year, species_count, specificities_json,
+                cover_image_url, intro_image_url, metric_map_value,
+                area_ha, created_year, specificities_json,
                 accordion1_title, accordion1_text, accordion2_title, accordion2_text
             FROM places
             WHERE id = :id
@@ -72,14 +72,14 @@ class PlaceService
         $stmt = $this->pdo->prepare(
             'INSERT INTO places (
                 slug, name_fr, headline_fr, short_description_fr, long_description_fr,
-                cover_image_url, intro_image_url, metric_map_label, metric_map_value,
-                area_ha, created_year, species_count, specificities_json,
+                cover_image_url, intro_image_url, metric_map_value,
+                area_ha, created_year, specificities_json,
                 accordion1_title, accordion1_text, accordion2_title, accordion2_text,
                 created_at, updated_at
             ) VALUES (
                 :slug, :name_fr, :headline_fr, :short_description_fr, :long_description_fr,
-                :cover_image_url, :intro_image_url, :metric_map_label, :metric_map_value,
-                :area_ha, :created_year, :species_count, :specificities_json,
+                :cover_image_url, :intro_image_url, :metric_map_value,
+                :area_ha, :created_year, :specificities_json,
                 :accordion1_title, :accordion1_text, :accordion2_title, :accordion2_text,
                 CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
             )'
@@ -104,11 +104,9 @@ class PlaceService
                 long_description_fr = :long_description_fr,
                 cover_image_url = :cover_image_url,
                 intro_image_url = :intro_image_url,
-                metric_map_label = :metric_map_label,
                 metric_map_value = :metric_map_value,
                 area_ha = :area_ha,
                 created_year = :created_year,
-                species_count = :species_count,
                 specificities_json = :specificities_json,
                 accordion1_title = :accordion1_title,
                 accordion1_text = :accordion1_text,

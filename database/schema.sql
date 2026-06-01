@@ -23,11 +23,9 @@ CREATE TABLE places (
     long_description_fr MEDIUMTEXT NULL,
     cover_image_url VARCHAR(500) NULL,
     intro_image_url VARCHAR(500) NULL,
-    metric_map_label VARCHAR(120) NULL,
     metric_map_value VARCHAR(180) NULL,
     area_ha INT NULL,
     created_year INT NULL,
-    species_count INT NULL,
     specificities_json JSON NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP

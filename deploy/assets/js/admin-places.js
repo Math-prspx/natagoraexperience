@@ -188,11 +188,9 @@ window.addEventListener('DOMContentLoaded', async () => {
     if (reserveForm.elements.intro_image_url) {
       reserveForm.elements.intro_image_url.value = place.intro_image_url || '';
     }
-    reserveForm.elements.metric_map_label.value = place.metric_map_label || '';
     reserveForm.elements.metric_map_value.value = place.metric_map_value || '';
     reserveForm.elements.area_ha.value = place.area_ha ?? '';
     reserveForm.elements.created_year.value = place.created_year ?? '';
-    reserveForm.elements.species_count.value = place.species_count ?? '';
 
     const specs = placeSpecificities(place);
     reserveForm.elements.spec_1_image.value = specs[0].image;
@@ -286,11 +284,9 @@ window.addEventListener('DOMContentLoaded', async () => {
       long_description_fr: formData.get('long_description_fr'),
       cover_image_url: formData.get('cover_image_url'),
       intro_image_url: formData.get('intro_image_url'),
-      metric_map_label: formData.get('metric_map_label'),
       metric_map_value: formData.get('metric_map_value'),
       area_ha: formData.get('area_ha') || null,
       created_year: formData.get('created_year') || null,
-      species_count: formData.get('species_count') || null,
       specificities: collectSpecificities(formData),
       accordion1_title: formData.get('accordion1_title') || null,
       accordion1_text:  formData.get('accordion1_text')  || null,
