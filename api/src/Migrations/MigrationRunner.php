@@ -45,7 +45,9 @@ class MigrationRunner
                 $this->pdo->commit();
                 $applied[] = $version;
             } catch (\Throwable $e) {
-                $this->pdo->rollBack();
+                if ($this->pdo->inTransaction()) {
+                    $this->pdo->rollBack();
+                }
                 throw new \RuntimeException(
                     sprintf('Migration %s failed: %s', $version, $e->getMessage()),
                     0,
