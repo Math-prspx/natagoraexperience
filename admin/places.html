@@ -240,6 +240,33 @@
               </div>
             </section>
 
+            <div class="form-divider" aria-hidden="true"></div>
+
+            <section class="form-group-block">
+              <h3 class="form-group-title">6. Accordéons "Infos pratiques"</h3>
+              <p class="form-hint">Le contenu peut inclure du HTML simple (listes &lt;ul&gt;, &lt;p&gt;, &lt;strong&gt;…).</p>
+
+              <div class="form-subblock">
+                <h4 class="form-subblock-title">Accordéon 1 — Faune &amp; Flore</h4>
+                <label>Titre de l'accordéon
+                  <input name="accordion1_title" placeholder="Faune et Flore">
+                </label>
+                <label>Contenu (HTML basique accepté)
+                  <textarea name="accordion1_text" rows="5" placeholder="Inventaires naturalistes, habitats remarquables…"></textarea>
+                </label>
+              </div>
+
+              <div class="form-subblock">
+                <h4 class="form-subblock-title">Accordéon 2 — Accès</h4>
+                <label>Titre de l'accordéon
+                  <input name="accordion2_title" placeholder="Comment accéder ?">
+                </label>
+                <label>Contenu (HTML basique accepté)
+                  <textarea name="accordion2_text" rows="5" placeholder="Accès en transports en commun, parkings…"></textarea>
+                </label>
+              </div>
+            </section>
+
             <div class="grid-2">
               <button type="submit" id="reserveSaveBtn">Ajouter reserve</button>
               <button type="button" class="btn btn-secondary" id="reserveCancelBtn">Annuler</button>

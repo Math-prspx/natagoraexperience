@@ -71,6 +71,10 @@ class AdminPlaceController
             'created_year' => Validator::optionalInt($payload, 'created_year'),
             'species_count' => Validator::optionalInt($payload, 'species_count'),
             'specificities_json' => !empty($specificities) ? json_encode($specificities) : null,
+            'accordion1_title' => Validator::optionalString($payload, 'accordion1_title'),
+            'accordion1_text'  => Validator::optionalString($payload, 'accordion1_text'),
+            'accordion2_title' => Validator::optionalString($payload, 'accordion2_title'),
+            'accordion2_text'  => Validator::optionalString($payload, 'accordion2_text'),
         ];
 
         $place = $this->service->create($data);
@@ -103,6 +107,10 @@ class AdminPlaceController
             'created_year' => Validator::optionalInt($payload, 'created_year'),
             'species_count' => Validator::optionalInt($payload, 'species_count'),
             'specificities_json' => !empty($specificities) ? json_encode($specificities) : null,
+            'accordion1_title' => Validator::optionalString($payload, 'accordion1_title'),
+            'accordion1_text'  => Validator::optionalString($payload, 'accordion1_text'),
+            'accordion2_title' => Validator::optionalString($payload, 'accordion2_title'),
+            'accordion2_text'  => Validator::optionalString($payload, 'accordion2_text'),
         ];
 
         $place = $this->service->update($placeId, $data);

@@ -205,6 +205,11 @@ window.addEventListener('DOMContentLoaded', async () => {
     reserveForm.elements.spec_3_title.value = specs[2].title;
     reserveForm.elements.spec_3_text.value = specs[2].text;
 
+    reserveForm.elements.accordion1_title.value = place.accordion1_title || '';
+    reserveForm.elements.accordion1_text.value  = place.accordion1_text  || '';
+    reserveForm.elements.accordion2_title.value = place.accordion2_title || '';
+    reserveForm.elements.accordion2_text.value  = place.accordion2_text  || '';
+
     updateCoverPreview(place.cover_image_url || '');
     updateIntroPreview(place.intro_image_url || '');
     specs.forEach((spec, idx) => updateSpecPreview(idx + 1, spec.image));
@@ -287,6 +292,10 @@ window.addEventListener('DOMContentLoaded', async () => {
       created_year: formData.get('created_year') || null,
       species_count: formData.get('species_count') || null,
       specificities: collectSpecificities(formData),
+      accordion1_title: formData.get('accordion1_title') || null,
+      accordion1_text:  formData.get('accordion1_text')  || null,
+      accordion2_title: formData.get('accordion2_title') || null,
+      accordion2_text:  formData.get('accordion2_text')  || null,
     };
 
     try {

@@ -1,0 +1,50 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Natagora\API\Migrations;
+
+use PDO;
+
+class M20260601_002_AddPlaceAccordions implements MigrationInterface
+{
+    public function up(PDO $pdo): void
+    {
+        $driver = $pdo->getAttribute(PDO::ATTR_DRIVER_NAME);
+
+        if ($driver === 'sqlite') {
+            // SQLite ne supporte pas IF NOT EXISTS sur ALTER COLUMN — on vérifie manuellement
+            $cols = array_column(
+                $pdo->query("PRAGMA table_info(places)")->fetchAll(),
+                'name'
+            );
+
+            if (!in_array('accordion1_title', $cols, true)) {
+                $pdo->exec("ALTER TABLE places ADD COLUMN accordion1_title TEXT NULL");
+            }
+            if (!in_array('accordion1_text', $cols, true)) {
+                $pdo->exec("ALTER TABLE places ADD COLUMN accordion1_text TEXT NULL");
+            }
+            if (!in_array('accordion2_title', $cols, true)) {
+                $pdo->exec("ALTER TABLE places ADD COLUMN accordion2_title TEXT NULL");
+            }
+            if (!in_array('accordion2_text', $cols, true)) {
+                $pdo->exec("ALTER TABLE places ADD COLUMN accordion2_text TEXT NULL");
+            }
+        } else {
+            // MySQL
+            $pdo->exec("
+                ALTER TABLE places
+                    ADD COLUMN IF NOT EXISTS accordion1_title VARCHAR(255) NULL,
+                    ADD COLUMN IF NOT EXISTS accordion1_text  TEXT NULL,
+                    ADD COLUMN IF NOT EXISTS accordion2_title VARCHAR(255) NULL,
+                    ADD COLUMN IF NOT EXISTS accordion2_text  TEXT NULL
+            ");
+        }
+    }
+
+    public function getVersion(): string
+    {
+        return '20260601_002';
+    }
+}

@@ -148,14 +148,16 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
 
           <div class="reserve-accordion">
+            ${place.accordion1_title || place.accordion1_text ? `
             <details>
-              <summary>Faune et Flore</summary>
-              <div class="reserve-accordion-body">Inventaires naturalistes, habitats remarquables, especes protegees et zones de quiétude.</div>
-            </details>
+              <summary>${place.accordion1_title || 'Faune et Flore'}</summary>
+              <div class="reserve-accordion-body">${place.accordion1_text || ''}</div>
+            </details>` : ''}
+            ${place.accordion2_title || place.accordion2_text ? `
             <details>
-              <summary>Comment accéder ?</summary>
-              <div class="reserve-accordion-body">Accès en transports en commun et en voiture, parkings de proximité, sentiers balisés et consignes de visite.</div>
-            </details>
+              <summary>${place.accordion2_title || 'Comment accéder ?'}</summary>
+              <div class="reserve-accordion-body">${place.accordion2_text || ''}</div>
+            </details>` : ''}
           </div>
         </section>
 

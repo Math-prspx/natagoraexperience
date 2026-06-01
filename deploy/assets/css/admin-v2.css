@@ -307,6 +307,12 @@ button:hover {
   color: #2f4722;
 }
 
+.form-hint {
+  margin: 0 0 8px;
+  font-size: 0.8rem;
+  color: #6b7a6b;
+}
+
 .form-divider {
   height: 1px;
   width: 100%;
