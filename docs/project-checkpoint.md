@@ -1,7 +1,7 @@
 # Natagora Xperience - Checkpoint de Référence
 
-**Date**: Mai 2026  
-**Version**: MVP v4  
+**Date**: Juin 2026  
+**Version**: v4.1  
 **Client**: Natagora  
 **Type**: Plateforme de catalogue et réservation d'expériences nature
 
@@ -16,15 +16,40 @@ Plateforme MVP pour transformer la page statique Natagora en catalogue dynamique
 - **Thématique**: Sorties spécialisées (botanique, ornithologie, etc.)
 - **Sur-mesure**: Expériences personnalisées (contact direct)
 
+### Mise a jour front - 02/06/2026
+
+- Refonte hero sur pages contenu avec variantes dediees:
+    - `content-hero-surmesure`
+    - `content-hero-apropos`
+    - `content-hero-pratique`
+- Section "Histoire Natagora" migree vers un bloc 50/50 type `sm-split` (texte + image) sur `a-propos.html`.
+- Page `a-propos.html`: ajout d icones sur les 4 cartes "Nos missions" et simplification du bloc newsletter.
+- Page `sur-mesure.html`: remplacement des visuels split par `surmesure-1.jpg` et `surmesure-2.jpg`.
+- Page `reserves.html`: hero/sections visuelles ajustees, cartes piliers avec images, CTA secondaire retire.
+- Page `reserve-detail.html` + `reserve-detail.js`: metriques converties en icones images (`Icon_surface.svg`, `Icon_creation.svg`, `Icon_home.svg`).
+- Page `catalogue.html` + `public-utils.js`: icones famille blanches corrigees (`Icon_mountain-white.svg`, `Icon_theme-white.svg`, `Icon_mesure-white.svg`) et normalisation des URLs d icones.
+- Page `promenade.js`: remplacement de l icone date hero par une icone calendrier.
+- `catalogue.css`: augmentation de l espacement horizontal/vertical de la grille cartes.
+- `index.html` + `style.css`: retouches copy/layout hero et cartes ressources.
+
+Verification rapide effectuee:
+- Aucune erreur IDE remontee (`get_errors` vide).
+- Correction appliquee sur la casse du fichier image `reserve_action-3.JPG` reference dans `reserves.html` (important pour serveurs Linux case-sensitive).
+
+Points de vigilance avant mise en prod:
+- Plusieurs assets images ont ete ajoutes dans `img/` et doivent etre presents aussi dans `deploy/img/` lors de la livraison.
+- Le dossier `deploy/` n est pas integralement synchro avec les dernieres modifs front source a cette date.
+
 ---
 
 ## 🏗️ Architecture Technique
 
 ### Stack
-- **Backend**: PHP 8.0+ / REST API / PDO
-- **Base de données**: MySQL (prod) / SQLite (dev local)
+- **Backend**: PHP 8.1+ / REST API / PDO / PSR-4 autoload
+- **Base de données**: MySQL (prod OVH) / SQLite (dev local)
 - **Frontend**: HTML5 / CSS3 / Vanilla JavaScript ES6+
-- **Hébergement**: OVH shared hosting
+- **Hébergement**: OVH mutualisé — `https://www.nothuman.be/natagora/`
+- **Auth**: HMAC-SHA256 tokens (Bearer), bcrypt passwords, TTL 8h
 
 ### Structure
 ```
@@ -75,10 +100,14 @@ Admin Frontend (HTML/JS séparé)
 - `api/src/Exceptions/NotFoundException.php` - Ressources manquantes (404)
 - `api/src/Exceptions/DatabaseException.php` - Erreurs DB (500)
 
-**Migrations**:
-- `api/src/Migrations/MigrationRunner.php` - Gestionnaire migrations
-- `api/src/Migrations/MigrationInterface.php` - Interface migrations
-- `api/src/Migrations/M20260531_001_AddWalkExtraColumns.php` - Migration active
+**Migrations** (auto-run au démarrage, versionnées):
+- `api/src/Migrations/MigrationRunner.php` - Gestionnaire (inTransaction() guard pour MySQL DDL)
+- `api/src/Migrations/MigrationInterface.php` - Interface
+- `api/src/Migrations/M20260531_001_AddWalkExtraColumns.php` - Colonnes extra walks
+- `api/src/Migrations/M20260531_002_AddPlaceIntroImage.php` - intro_image_url places
+- `api/src/Migrations/M20260601_001_RenameWalkContentImageUrl.php` - Renommage colonne walk
+- `api/src/Migrations/M20260601_002_AddPlaceAccordions.php` - 4 colonnes accordion places
+- `api/src/Migrations/M20260601_003_RemovePlaceMetricLabelSpecies.php` - Supprime metric_map_label + species_count
 
 ### Frontend Public
 - `index.html` - Page d'accueil
@@ -152,10 +181,12 @@ Admin Frontend (HTML/JS séparé)
 **places** (réserves naturelles)
 - `id`, `slug`, `name_fr`, `headline_fr`
 - `short_description_fr`, `long_description_fr`
-- `cover_image_url`
-- `metric_map_label`, `metric_map_value`
-- `area_ha`, `created_year`, `species_count`
+- `cover_image_url`, `intro_image_url`
+- `metric_map_value` (ex: région)
+- `area_ha`, `created_year`
 - `specificities_json` (JSON: [{image, text}])
+- `accordion1_title`, `accordion1_text` (HTML, ex: Faune & Flore)
+- `accordion2_title`, `accordion2_text` (HTML, ex: Comment accéder ?)
 - `created_at`, `updated_at`
 
 **walks** (promenades)
@@ -166,7 +197,7 @@ Admin Frontend (HTML/JS séparé)
 - `practical_info_json` (JSON: array of strings)
 - `pmr_accessible` (PMR = Personnes à Mobilité Réduite)
 - `price_label`
-- `cover_image_url`, `content_image_url`
+- `cover_image_url`, `intro_image_url`
 - `gallery_json` (JSON: array of URLs)
 - `booking_mode` (link/iframe/hybrid)
 - `booking_url`, `booking_embed_url`
@@ -196,13 +227,16 @@ Admin Frontend (HTML/JS séparé)
 - `GET /public/walks` - Liste promenades (filtres: family, subcategory, place, from_date)
 - `GET /public/walks/{slug}` - Détail promenade avec occurrences
 
-### Admin (POST/DELETE - PAS D'AUTH dans MVP)
+### Admin (auth requise sauf login)
+- `POST /admin/login` - Connexion admin → retourne token Bearer
 - `GET /admin/meta` - Métadonnées (familles, catégories, réserves)
 - `GET /admin/families` - Familles avec compteurs
 - `GET /admin/subcategories` - Catégories avec compteur walks
 - `GET /admin/places` - Toutes les réserves
+- `GET /admin/places/{id}` - Détail réserve
 - `GET /admin/walks` - Toutes les promenades (hydratées)
-- `POST /admin/upload-image` - Upload image (max 8MB) → retourne URL
+- `GET /admin/walks/{id}` - Détail promenade
+- `POST /admin/upload-image` - Upload image (max 8MB) → retourne `item.url` et `item.thumb_url`
 - `POST /admin/subcategories` - Créer catégorie
 - `POST /admin/subcategories/{id}` - MAJ catégorie
 - `DELETE /admin/subcategories/{id}` - Supprimer catégorie
@@ -210,9 +244,13 @@ Admin Frontend (HTML/JS séparé)
 - `POST /admin/places/{id}` - MAJ réserve
 - `POST /admin/walks` - Créer promenade
 - `POST /admin/walks/{id}` - MAJ promenade
+- `DELETE /admin/walks/{id}` - Supprimer promenade
+- `GET /admin/walk-occurrences` - Lister occurrences (filtre optionnel: walk_id)
 - `POST /admin/walk-occurrences` - Créer occurrence
 - `POST /admin/walk-occurrences/{id}` - MAJ occurrence
 - `DELETE /admin/walk-occurrences/{id}` - Supprimer occurrence
+
+Routes non exposees actuellement par le routeur:
 
 ---
 
@@ -223,16 +261,20 @@ Admin Frontend (HTML/JS séparé)
 ✅ Catalogue promenades avec filtres (famille, catégorie, lieu, date)  
 ✅ Détail promenade (description, galerie, infos pratiques, dates, capacités)  
 ✅ Liste et détail réserves naturelles  
+✅ Sections accordéon dynamiques par réserve (Faune & Flore, Accès...)  
+✅ 3 métriques par réserve (superficie, année création, région)  
 ✅ Promenades associées dans même réserve  
 ✅ Intégration réservation Billetweb (3 modes: link/iframe/hybrid)  
 ✅ Responsive design  
 
 ### Admin
+✅ Authentification sécurisée (HMAC-SHA256 tokens, bcrypt)  
 ✅ Dashboard KPI (total walks, ratio publié/brouillon, prochaines occurrences)  
 ✅ CRUD promenades complet  
 ✅ Gestion occurrences (dates/horaires/capacités)  
 ✅ Upload images (validation, max 8MB)  
 ✅ CRUD réserves naturelles  
+✅ Sections accordéon éditables par réserve (2 blocs titre + HTML)  
 ✅ CRUD catégories/sous-catégories  
 ✅ Filtres (recherche texte, famille, statut)  
 ✅ Gestion galeries photos  
@@ -278,12 +320,14 @@ DB_SQLITE_PATH=/path/to/local.sqlite
 ```
 
 ### Déploiement Production (OVH)
-1. Créer base MySQL
-2. Importer `database/schema.sql`
-3. Importer `database/seed.sql`
-4. Configurer env ou copier `api/config.example.php` → `api/config.php`
-5. Vérifier `api/.htaccess` (route vers `/api/index.php`)
-6. **IMPORTANT**: Ajouter authentification admin avant mise en ligne
+1. Créer base MySQL et importer `database/schema.sql` + `database/seed.sql`
+2. Copier le dossier `deploy/` vers OVH via FTP
+3. **Uploader manuellement** `deploy/api/config.php` (gitignored — credentials DB + auth)
+4. Vérifier `deploy/api/.htaccess` (Authorization header passthrough + rewrite vers `index.php`)
+5. Les migrations s'exécutent automatiquement au premier appel API
+
+**Prod actuelle**: `https://www.nothuman.be/natagora/`  
+**Config prod**: MySQL `nothumannatagora.mysql.db`, db/user = `nothumannatagora`
 
 ---
 
@@ -306,9 +350,13 @@ DB_SQLITE_PATH=/path/to/local.sqlite
 
 ### ✅ Complété
 - **Architecture refactorisée (Mai 2026)**: Controllers, Services, Validators
-- **Router orienté objet** avec support regex
+- **Authentification admin** HMAC-SHA256 (Juin 2026)
+- **Accordéons réserves** (Faune & Flore / Accès) éditables (Juin 2026)
+- **Suppression métriques obsolètes** (metric_map_label, species_count)
+- Router orienté objet avec support regex
 - Core API (tous endpoints public + admin)
 - Schéma DB (MySQL + SQLite)
+- Migrations versionnées auto-run
 - Catalogue avec filtrage
 - Pages détail (promenades + réserves)
 - Admin complet (dashboard, CRUD)
@@ -317,9 +365,9 @@ DB_SQLITE_PATH=/path/to/local.sqlite
 - Localisation française
 - Modes réservation flexibles
 - Setup dev local SQLite
+- Déploiement OVH opérationnel
 
-### ⚠️ TODO / Hors scope MVP
-- Authentification admin (intentionnellement omis MVP)
+### ⚠️ TODO / Hors scope actuel
 - Comptes utilisateurs / wishlists
 - Avis et notations
 - Opérations bulk admin
@@ -334,16 +382,15 @@ DB_SQLITE_PATH=/path/to/local.sqlite
 ## 🔒 Sécurité
 
 ### État actuel
-- Admin **SANS authentification** (MVP)
-- CORS activé tous origins
+- Admin **sécurisé**: HMAC-SHA256 Bearer tokens, bcrypt passwords, TTL 8h
+- CORS activé tous origins (acceptable OVH mutualisé)
 - Prepared statements (protection SQL injection)
 - Validation upload images (types, taille max 8MB)
 
-### Avant production
-⚠️ **OBLIGATOIRE**: Ajouter middleware authentification admin  
-⚠️ Restreindre CORS origins  
-⚠️ Rate limiting API  
-⚠️ HTTPS obligatoire  
+### Recommandations production
+⚠️ Restreindre CORS origins si sensible  
+⚠️ Rate limiting API (non implémenté)  
+✅ HTTPS actif sur OVH  
 
 ---
 
@@ -358,17 +405,18 @@ DB_SQLITE_PATH=/path/to/local.sqlite
 
 ---
 
-## 🔧 C (Refactoring Mai 2026)
+## 🔧 Conventions techniques
+
+### PHP (refactoring Mai 2026)
 - **Architecture**: Controllers → Services → Database
 - **Router orienté objet** avec support regex (#pattern#)
 - **PSR-4 Autoloading** (Natagora\API namespace)
 - **Dependency Injection** dans constructeurs
 - **Service Layer Pattern** pour logique métier
-- Type declarations (PHP 8.0+)
+- Type declarations (PHP 8.1+)
 - PDO prepared statements
-- Error handling avec try-catch
-- JSON responses (via Response class)ch
-- JSON responses (via Response class)
+- Error handling avec try-catch + ExceptionHandler global
+- JSON responses via `Response` class
 - Namespacing: `Natagora\API`
 
 ### JavaScript
@@ -396,16 +444,18 @@ DB_SQLITE_PATH=/path/to/local.sqlite
 
 ## 📝 Notes importantes
 
-1. **Admin non sécurisé**: Ajouter auth avant prod
-2. **Images**: Stockées dans `assets/media/uploads/`, max 8MB
-9. **Architecture refactorisée (Mai 2026)**: 91% réduction code index.php (1500→130 lignes)
-10. **Backup**: Ancien code conservé dans `api/index.old.php`
-3. **Réservations**: Gérées par Billetweb (externe)
-4. **Capacités**: Pas de sync auto avec Billetweb (manuel dans MVP)
-5. **Localization**: Tout en français, colonnes `_fr` pour i18n future
-6. **SQLite**: Dev local uniquement, MySQL pour prod
-7. **PMR**: Personnes à Mobilité Réduite (accessibilité fauteuil)
-8. **URL slugs**: Générés automatiquement, utilisés pour routing SEO-friendly
+1. **Auth admin**: HMAC-SHA256 tokens Bearer, credentials dans `deploy/api/config.php` (gitignored)
+2. **config.php**: Gitignored — uploader manuellement via FTP sur OVH à chaque modif
+3. **Images**: Stockées dans `assets/media/uploads/`, max 8MB
+4. **Architecture refactorisée (Mai 2026)**: 91% réduction code index.php (1500→130 lignes)
+5. **Backup**: Ancien code conservé dans `api/index.old.php`
+6. **Réservations**: Gérées par Billetweb (externe)
+7. **Capacités**: Pas de sync auto avec Billetweb (manuel)
+8. **Localization**: Tout en français, colonnes `_fr` pour i18n future
+9. **SQLite**: Dev local uniquement, MySQL pour prod
+10. **PMR**: Personnes à Mobilité Réduite (accessibilité fauteuil)
+11. **URL slugs**: Générés automatiquement, utilisés pour routing SEO-friendly
+12. **Migrations MySQL**: DDL fait un implicit commit — toujours utiliser `inTransaction()` avant `commit()`/`rollBack()`
 
 ---
 
@@ -427,5 +477,5 @@ DB_SQLITE_PATH=/path/to/local.sqlite
 
 ---
 
-*Dernière mise à jour: 31 mai 2026 - Architecture refactorisée + Check complet validé ✅*  
+*Dernière mise à jour: 02 juin 2026 - Snapshot front + verification coherence assets*  
 *Voir [check-complet-20260531.md](check-complet-20260531.md) pour rapport détaillé*

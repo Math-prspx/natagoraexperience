@@ -96,17 +96,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         <section class="reserve-metrics" aria-label="Informations clés réserve">
           <article class="reserve-metric">
-            <span class="reserve-metric-icon">~</span>
+            <img class="reserve-metric-icon" src="${normalizePublicUrl('/img/Icon_surface.svg')}" alt="Icone superficie" loading="lazy">
             <p class="reserve-metric-label">Superficie</p>
             <p class="reserve-metric-value">${areaValue}</p>
           </article>
           <article class="reserve-metric">
-            <span class="reserve-metric-icon">Cal</span>
+            <img class="reserve-metric-icon" src="${normalizePublicUrl('/img/Icon_creation.svg')}" alt="Icone création" loading="lazy">
             <p class="reserve-metric-label">Créée en</p>
             <p class="reserve-metric-value">${createdValue}</p>
           </article>
           <article class="reserve-metric">
-            <span class="reserve-metric-icon">Map</span>
+            <img class="reserve-metric-icon" src="${normalizePublicUrl('/img/Icon_home.svg')}" alt="Icone régionale" loading="lazy">
             <p class="reserve-metric-label">Régionale</p>
             <p class="reserve-metric-value">${mapValue}</p>
           </article>

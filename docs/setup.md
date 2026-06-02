@@ -48,10 +48,53 @@ Depannage local:
   - `contact.html`
   - `admin/index.html`
 
+  ## 3bis) Checklist deploiement frontend (HTML/CSS/JS/images)
+
+  Quand des changements concernent uniquement le front, verifier avant upload:
+
+  1. Synchroniser les pages source et leurs equivalents dans `deploy/` si ce dossier est utilise pour la livraison.
+  2. Synchroniser les assets modifies:
+    - `assets/css/*`
+    - `assets/js/*`
+    - `img/*` puis `deploy/img/*`
+  3. Verifier la casse exacte des fichiers image (`.jpg` vs `.JPG`) car OVH/Linux est case-sensitive.
+  4. Ouvrir les pages publiques critiques apres upload:
+    - `index.html`
+    - `catalogue.html`
+    - `sur-mesure.html`
+    - `a-propos.html`
+    - `reserves.html`
+    - `reserve-detail.html`
+
 ## 4) Reservation Billetweb
 - Preferer `booking_mode = hybrid`.
 - Si iframe bloquee par le fournisseur, le lien externe reste disponible.
 
 ## 5) Securite
-- L admin est volontairement sans auth pour ce MVP.
-- Ajouter une protection d acces avant mise en production.
+- L admin est protege par authentification Bearer token HMAC-SHA256.
+- Les credentials et le secret sont configures dans `api/config.php`.
+- Avant production, changer les credentials par defaut et desactiver le debug si encore actif.
+
+## 6) Pieges MySQL OVH (mutualise)
+
+### DDL implicit commit
+MySQL annule automatiquement toute transaction ouverte des qu une commande DDL
+(`ALTER TABLE`, `CREATE TABLE`, `DROP TABLE`...) est executee.
+Le `PDO->commit()` suivant crash avec "There is no active transaction".
+
+**Fix dans MigrationRunner :** toujours verifier `inTransaction()` avant `commit()` ET `rollBack()`.
+
+```php
+if ($this->pdo->inTransaction()) {
+    $this->pdo->commit();
+}
+```
+
+### ADD COLUMN IF NOT EXISTS non supporte
+La version MySQL d OVH mutualisee ne supporte pas `ALTER TABLE ADD COLUMN IF NOT EXISTS`.
+Utiliser `SHOW COLUMNS FROM table LIKE 'column'` pour verifier l existence avant d ajouter.
+
+### config.php gitignore
+`api/config.php` est gitignore et ne part pas dans le deploy git.
+Il faut l uploader manuellement via FTP a chaque modification.
+Le fichier de reference local est `deploy/api/config.php`.

@@ -113,14 +113,14 @@ window.PublicUtils = (() => {
       return {
         className: 'walk-tag-theme',
         agendaClassName: 'agenda-tag-theme',
-        icon: '/img/Icon_theme.svg',
+        icon: '/img/Icon_theme-white.svg',
       };
     }
 
     return {
       className: 'walk-tag-discovery',
       agendaClassName: 'agenda-tag-discovery',
-      icon: '/img/Icon_mountain.svg',
+      icon: '/img/Icon_mountain-white.svg',
     };
   }
 
@@ -129,12 +129,13 @@ window.PublicUtils = (() => {
     const cover = normalizePublicUrl(item.cover_image_url, placeholders[index % placeholders.length]);
     const detailUrl = item.slug ? `promenade.html?slug=${encodeURIComponent(item.slug)}` : 'catalogue.html';
     const family = familyMeta(item.family_code);
+    const familyIcon = normalizePublicUrl(family.icon);
     const cardClassName = String(options.cardClassName || '').trim();
 
     return `
       <article class="agenda-card ${cardClassName}">
         <div class="agenda-visual" style="--agenda-image:url('${cover}')">
-          <div class="agenda-tag ${family.agendaClassName}"><img src="${family.icon}" alt="" aria-hidden="true">${item.family_label || ''}</div>
+          <div class="agenda-tag ${family.agendaClassName}"><img src="${familyIcon}" alt="" aria-hidden="true">${item.family_label || ''}</div>
           <h3 class="agenda-event-title">${item.title || 'Visite guidée'}</h3>
           <p class="agenda-place">${item.place_name || 'Lieu a confirmer'}</p>
         </div>

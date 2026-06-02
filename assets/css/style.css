@@ -513,7 +513,7 @@ a {
   height: 100vh;
   padding: 0;
   padding-left: 3%;
-  background: linear-gradient(rgba(239, 239, 239, 0.5), rgba(239, 239, 239, 0.5)), url('../../img/background.jpg');
+  background: linear-gradient(rgba(239, 239, 239, 0.5), rgba(239, 239, 239, 0.5)), url('../../img/reserve.jpg');
   background-blend-mode: multiply;
   overflow: hidden;
   z-index: 4;
@@ -711,7 +711,7 @@ a {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
+  gap: 25px;
   text-align: center;
 }
 
@@ -722,6 +722,7 @@ a {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: #dce7aa;
+  width: 40vw;
 }
 
 .hero-title {
@@ -737,8 +738,8 @@ a {
 
 .hero-intro {
   margin: 0;
-  max-width: 58ch;
-  font-size: 20px;
+  width: 40vw;
+  font-size: 22px;
   line-height: 1.5;
   padding-bottom: 1vw;
 }
@@ -1349,7 +1350,7 @@ a {
 
 .resources-grid {
   display: flex;
-  gap: 0;
+  gap: 1px;
   justify-content: center;
   align-items: stretch;
 }
@@ -1381,15 +1382,15 @@ a {
 }
 
 .resource-card:nth-child(1)::before {
-  background-image: url('../../img/chouette.jpg');
+  background-image: url('../../img/itineraire.jpg');
 }
 
 .resource-card:nth-child(2)::before {
-  background-image: url('../../img/chouette.jpg');
+  background-image: url('../../img/balade.jpg');
 }
 
 .resource-card:nth-child(3)::before {
-  background-image: url('../../img/chouette.jpg');
+  background-image: url('../../img/agenda.jpg');
 }
 
 .resource-card-overlay {
@@ -1407,7 +1408,7 @@ a {
 .resource-card-content {
   position: relative;
   z-index: 2;
-  padding: 32px;
+  padding: 2vw;
   color: #ffffff;
 }
 
@@ -1692,6 +1693,51 @@ body.menu-open {
   background-repeat: no-repeat;
   overflow: hidden;
 }
+.content-hero-surmesure {
+  position: relative;
+  min-height: 92vh;
+  display: flex;
+  align-items: flex-end;
+  padding: 0 10vw 88px;
+  color: #ffffff;
+  background-image:
+    linear-gradient(180deg, rgba(8, 12, 10, 0.16) 0%, rgba(8, 12, 10, 0.78) 74%),
+    url('../../img/pratique-1.jpg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+.content-hero-apropos {
+  position: relative;
+  min-height: 92vh;
+  display: flex;
+  align-items: flex-end;
+  padding: 0 10vw 88px;
+  color: #ffffff;
+  background-image:
+    linear-gradient(180deg, rgba(8, 12, 10, 0.16) 0%, rgba(8, 12, 10, 0.78) 74%),
+    url('../../img/apropos.jpg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+.content-hero-pratique {
+  position: relative;
+  min-height: 92vh;
+  display: flex;
+  align-items: flex-end;
+  padding: 0 10vw 88px;
+  color: #ffffff;
+  background-image:
+    linear-gradient(180deg, rgba(8, 12, 10, 0.16) 0%, rgba(8, 12, 10, 0.78) 74%),
+    url('../../img/pratique-2.jpg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
 
 .content-hero-layer {
   position: absolute;
@@ -1705,9 +1751,10 @@ body.menu-open {
 
 .content-hero-content {
   position: relative;
-  width: min(940px, 100%);
+  width: min(1280px, 100%);
   display: grid;
   gap: 16px;
+  padding-bottom: 100px;
 }
 
 .content-kicker {
@@ -1733,7 +1780,7 @@ body.menu-open {
 
 .content-hero-intro {
   margin: 0;
-  max-width: 68ch;
+  max-width: 100%;
   color: #f5f6ef;
   line-height: 1.45;
   font-size: clamp(1rem, 1.55vw, 1.24rem);
@@ -1854,8 +1901,11 @@ body.menu-open {
 
 /* Content Sections */
 .content-section {
-  padding: 100px 80px;
+  padding: 10vh 10vh;
   background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .content-section-alt {
@@ -1863,13 +1913,16 @@ body.menu-open {
 }
 
 .content-section-cta {
-  background: var(--color-cta);
+  padding: 20vh 20vh;
+  background-image: url('../../img/apropos-bgr.jpg');
+  background-size: cover;
+  background-position: center;
   color: #ffffff;
   text-align: center;
 }
 
 .content-section-inner {
-  width: min(900px, 100%);
+  width: min(1200px, 100%);
   margin: 0 auto;
 }
 
@@ -1992,25 +2045,32 @@ body.menu-open {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 3rem 5vw 1.5rem;
+  padding: 0;
+  margin: 0;
+  padding-bottom: 30px;
 }
 
 .footer-content {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  width: 100%;
   flex: 1;
+  margin: 0;
+  padding-left:2vw;
+  padding-right:2vw;
 }
 
 .footer-logo img {
-  max-width: 180px;
+  max-width: 130px;
   height: auto;
 }
 
 .footer-socials {
   display: flex;
-  gap: 2rem;
+  gap: 1rem;
   align-items: center;
+  margin-top: 50px;
 }
 
 .footer-social-link {

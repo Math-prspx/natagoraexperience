@@ -263,7 +263,7 @@ function render(walk) {
           <h1>${walk.title}</h1>
           <div class="detail-hero-meta" aria-label="Informations principales">
             <span class="detail-meta-item detail-meta-item-date">
-              <svg class="detail-meta-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 8.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2Zm0 2.5a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm0-9a1 1 0 0 1 1 1v1.09a8 8 0 1 1-4.91 14.83 1 1 0 1 1 1.1-1.67A6 6 0 1 0 13 5.17V6a1 1 0 1 1-2 0V3a1 1 0 0 1 1-1Z" fill="currentColor"/></svg>
+              <svg class="detail-meta-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6.75 2.25A.75.75 0 0 1 7.5 3v1.5h9V3a.75.75 0 0 1 1.5 0v1.5h.75A2.25 2.25 0 0 1 21 6.75V18a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18V6.75A2.25 2.25 0 0 1 5.25 4.5H6V3a.75.75 0 0 1 .75-.75ZM4.5 9v9c0 .414.336.75.75.75h13.5a.75.75 0 0 0 .75-.75V9h-15Zm3 3a.75.75 0 0 0 0 1.5h1.5a.75.75 0 0 0 0-1.5H7.5Zm4.5 0a.75.75 0 0 0 0 1.5h1.5a.75.75 0 0 0 0-1.5H12Zm4.5 0a.75.75 0 0 0 0 1.5h.75a.75.75 0 0 0 0-1.5H16.5Z" fill="currentColor"/></svg>
               ${firstDate}
             </span>
             <span class="detail-meta-item detail-meta-item-subtle">
