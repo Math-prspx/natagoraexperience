@@ -1,5 +1,9 @@
 # Briefing Projet Natagora Xperience - 31 mai 2026
 
+> Note de reprise au 02/06/2026: ce briefing reste utile pour le contexte produit et front,
+> mais il ne fait plus foi pour l etat technique exact. Se referer a `docs/project-checkpoint.md`
+> pour l etat courant, et a `docs/api-contract.md` pour la surface API verifiee.
+
 ## 📋 Vue d'ensemble
 
 **Natagora Xperience** est une plateforme web de réservation d'expériences nature guidées dans les réserves naturelles de Natagora (Wallonie & Bruxelles).
@@ -8,7 +12,6 @@
 Permettre au public de découvrir et réserver des sorties guidées en réserve naturelle à travers 3 types d'expériences :
 - **Découverte** : Initiation accessible à tous
 - **Thématique** : Approfondissement sur thèmes spécifiques
-- **Naturalistes** : Expertise pour connaisseurs
 - **Sur mesure** : Expériences personnalisées pour groupes
 
 ---
@@ -239,13 +242,15 @@ contact.html                    # Formulaire contact
 - [x] Homogénéisation CSS (31/05/2026)
 
 ### 🔄 En cours / À faire
-Référence : `docs/check-complet-20260531.md` (tâches 1-11)
+Référence historique : `docs/check-complet-20260531.md`
+
+Référence d etat courant : `docs/project-checkpoint.md`
 
 **Priorités potentielles** :
 - Tâche 11 : Build pipeline / minification (reportée)
 - Optimisations SEO (meta descriptions, structured data)
 - Tests cross-browser
-- Optimisation images (lazy loading, WebP)
+- Nettoyage documentaire
 
 ---
 

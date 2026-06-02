@@ -11,6 +11,32 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   let walks = [];
 
+  function bindDeleteButtons() {
+    document.querySelectorAll('.js-delete-walk').forEach((button) => {
+      button.addEventListener('click', async () => {
+        const walkId = button.getAttribute('data-walk-id');
+        if (!walkId) {
+          return;
+        }
+
+        const confirmed = window.confirm('Supprimer cette promenade ? Les occurrences associees seront aussi supprimees.');
+        if (!confirmed) {
+          return;
+        }
+
+        try {
+          await apiFetch('/admin/walks/' + walkId, {
+            method: 'DELETE',
+          });
+          await load();
+          setStatus(statusEl, 'Promenade supprimee.');
+        } catch (error) {
+          setStatus(statusEl, error.message, true);
+        }
+      });
+    });
+  }
+
   function renderRows() {
     const q = (searchInput.value || '').trim().toLowerCase();
     const selectedFamily = familyFilter.value;
@@ -52,6 +78,7 @@ window.addEventListener('DOMContentLoaded', async () => {
                   <div class="table-actions">
                     <a class="btn btn-secondary" href="walk-edit.html?id=${walk.id}">Editer</a>
                     <a class="btn btn-secondary" href="walk-edit.html?id=${walk.id}#occurrences">Occurrences</a>
+                    <button type="button" class="btn-danger js-delete-walk" data-walk-id="${walk.id}">Supprimer</button>
                   </div>
                 </td>
               </tr>
@@ -59,6 +86,8 @@ window.addEventListener('DOMContentLoaded', async () => {
           )
           .join('')
       : '<tr><td colspan="7" class="muted">Aucun resultat.</td></tr>';
+
+    bindDeleteButtons();
   }
 
   async function load() {

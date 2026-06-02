@@ -298,6 +298,14 @@ class WalkService
         return $this->findById($id);
     }
 
+    public function delete(int $id): void
+    {
+        $this->findById($id);
+
+        $stmt = $this->pdo->prepare('DELETE FROM walks WHERE id = :id');
+        $stmt->execute(['id' => $id]);
+    }
+
     private function hydrateWalk(array $walk): array
     {
         // Load occurrences

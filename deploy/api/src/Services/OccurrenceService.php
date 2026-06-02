@@ -16,6 +16,39 @@ class OccurrenceService
         $this->pdo = $pdo;
     }
 
+    public function findAll(?int $walkId = null): array
+    {
+        $sql = 'SELECT
+                wo.id,
+                wo.walk_id,
+                wo.starts_at,
+                wo.ends_at,
+                wo.max_capacity,
+                wo.available_capacity,
+                wo.booking_url,
+                wo.booking_embed_url,
+                wo.status,
+                wo.created_at,
+                wo.updated_at,
+                w.title AS walk_title,
+                w.slug AS walk_slug
+            FROM walk_occurrences wo
+            INNER JOIN walks w ON w.id = wo.walk_id';
+
+        $params = [];
+        if ($walkId !== null) {
+            $sql .= ' WHERE wo.walk_id = :walk_id';
+            $params['walk_id'] = $walkId;
+        }
+
+        $sql .= ' ORDER BY wo.starts_at ASC, wo.id ASC';
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+
+        return $stmt->fetchAll();
+    }
+
     public function findById(int $id): array
     {
         $stmt = $this->pdo->prepare(

@@ -42,7 +42,9 @@ class MigrationRunner
                 $migration->up($this->pdo);
                 $this->recordMigration($version, $migration->getDescription());
                 
-                $this->pdo->commit();
+                if ($this->pdo->inTransaction()) {
+                    $this->pdo->commit();
+                }
                 $applied[] = $version;
             } catch (\Throwable $e) {
                 if ($this->pdo->inTransaction()) {

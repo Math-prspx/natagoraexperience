@@ -137,13 +137,16 @@ $router->delete('#^/admin/places/(\d+)$#', [$adminPlaceController, 'delete']);
 // ==========================================
 
 $router->get('/admin/walks', [$adminWalkController, 'list']);
+$router->get('#^/admin/walks/(\d+)$#', [$adminWalkController, 'detail']);
 $router->post('/admin/walks', [$adminWalkController, 'create']);
 $router->post('#^/admin/walks/(\d+)$#', [$adminWalkController, 'update']);
+$router->delete('#^/admin/walks/(\d+)$#', [$adminWalkController, 'delete']);
 
 // ==========================================
 // ADMIN ROUTES - Occurrences
 // ==========================================
 
+$router->get('/admin/walk-occurrences', [$adminOccurrenceController, 'list']);
 $router->post('/admin/walk-occurrences', [$adminOccurrenceController, 'create']);
 $router->post('#^/admin/walk-occurrences/(\d+)$#', [$adminOccurrenceController, 'update']);
 $router->delete('#^/admin/walk-occurrences/(\d+)$#', [$adminOccurrenceController, 'delete']);

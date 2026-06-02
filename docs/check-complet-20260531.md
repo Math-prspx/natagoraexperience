@@ -2,6 +2,9 @@
 **Date**: 31 mai 2026  
 **Statut global**: ✅ **STABLE ET FONCTIONNEL**
 
+> Note de reprise au 02/06/2026: ce document reste un snapshot historique du 31/05.
+> Pour l etat courant, se referer d abord a `docs/project-checkpoint.md`, `docs/api-contract.md` et `docs/architecture.md`.
+
 ---
 
 ## 🎯 Résumé
@@ -162,34 +165,39 @@ api/src/
    - Interface MigrationInterface
    - 1 migration déployée et trackée
 
-### 🔜 À Implémenter (4/12)
+### ✅ Mises a jour depuis ce bilan
 
-9. **⏳ Optimisation Images**
+Les points suivants ont ete realises apres ce rapport:
+
+9. **✅ Optimisation Images**
    - Compression automatique
    - Conversion WebP
-   - Génération thumbnails
+   - Generation thumbnails
 
-10. **⏳ Logging Structuré**
-    - Log erreurs API
-    - Log actions admin
-    - Rotation logs
+10. **✅ Logging Structure**
+   - Log erreurs API
+   - Log actions admin
+   - Rotation logs
 
-11. **⏳ Build Pipeline JS/CSS**
-    - Minification
-    - Bundling
-    - Source maps
+11. **⏭️ Build Pipeline JS/CSS**
+   - Laisse hors scope / low value pour ce projet
 
-12. **⏳ Cache API**
-    - File cache pour endpoints publics
-    - Invalidation automatique
-    - TTL configurable
+12. **✅ Cache API**
+   - File cache pour endpoints publics
+   - Invalidation automatique
+   - TTL configurable
+
+13. **✅ Authentification admin**
+   - Tokens Bearer HMAC-SHA256
+   - Mots de passe bcrypt
+   - Guard backend + redirect frontend
 
 ---
 
 ## 🔒 Sécurité
 
 ### ⚠️ Notes Importantes
-- **Admin non sécurisé**: Authentification à implémenter avant production
+- **Admin sécurisé**: Authentification Bearer token active
 - **CORS**: Actuellement ouvert à tous (`*`) - à restreindre en prod
 - **Upload**: Validation MIME type implémentée, max 8MB
 - **SQL**: Prepared statements partout (protection injection)
@@ -206,10 +214,8 @@ api/src/
 - ✅ **Autoloading**: Classes chargées à la demande
 
 ### À Venir
-- ⏳ Cache API (file-based ou Redis)
-- ⏳ Minification assets
-- ⏳ Compression images
-- ⏳ CDN pour assets statiques
+- ⏳ Minification assets si besoin reel
+- ⏳ CDN pour assets statiques si volumetrie en hausse
 
 ---
 
@@ -239,10 +245,10 @@ api/src/
 - Code validé sans erreurs
 
 **Prochaines priorités** recommandées :
-1. Authentification admin
-2. Cache API
-3. Optimisation images
-4. Logging structuré
+1. Validation deploiement OVH / MySQL
+2. Restriction CORS si necessaire
+3. Nettoyage documentaire final
+4. Evolutions produit hors MVP
 
 ---
 

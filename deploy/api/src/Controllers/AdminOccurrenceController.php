@@ -25,6 +25,13 @@ class AdminOccurrenceController
         $this->logger  = $logger;
     }
 
+    public function list(): void
+    {
+        $walkId = isset($_GET['walk_id']) && $_GET['walk_id'] !== '' ? (int) $_GET['walk_id'] : null;
+        $occurrences = $this->service->findAll($walkId && $walkId > 0 ? $walkId : null);
+        Response::json(['items' => $occurrences]);
+    }
+
     public function create(): void
     {
         $payload = Router::getRequestJson();

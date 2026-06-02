@@ -34,6 +34,12 @@ class AdminWalkController
         Response::json(['items' => $walks]);
     }
 
+    public function detail(string $id): void
+    {
+        $walk = $this->service->findById((int) $id);
+        Response::json(['item' => $walk]);
+    }
+
     public function create(): void
     {
         $payload = Router::getRequestJson();
@@ -132,5 +138,21 @@ class AdminWalkController
         $this->cache?->invalidateGroup('walks');
         $this->cache?->delete(Cache::makeKey('walk', $walk['slug']));
         Response::json(['item' => $walk]);
+    }
+
+    public function delete(string $id): void
+    {
+        $walkId = (int) $id;
+        $walk = $this->service->findById($walkId);
+
+        $this->service->delete($walkId);
+        $this->logger?->info('walk.deleted', ['id' => $walkId, 'slug' => $walk['slug']]);
+        $this->cache?->invalidateGroup('walks');
+        $this->cache?->delete(Cache::makeKey('walk', $walk['slug']));
+
+        Response::json([
+            'deleted' => true,
+            'id' => $walkId,
+        ]);
     }
 }
