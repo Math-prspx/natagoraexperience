@@ -513,8 +513,6 @@ a {
   height: 100vh;
   padding: 0;
   padding-left: 3%;
-  background: linear-gradient(rgba(239, 239, 239, 0.5), rgba(239, 239, 239, 0.5)), url('../../img/reserve.jpg');
-  background-blend-mode: multiply;
   overflow: hidden;
   z-index: 4;
 }
