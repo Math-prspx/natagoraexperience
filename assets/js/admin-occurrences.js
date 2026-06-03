@@ -75,6 +75,9 @@ window.addEventListener('DOMContentLoaded', async () => {
                 </label>
               </div>
               <div class="grid-3">
+                <label>Nom du guide
+                  <input name="guide_name" value="${row.guide_name ?? ''}">
+                </label>
                 <label>URL réservation
                   <input name="booking_url" value="${row.booking_url ?? ''}">
                 </label>
@@ -112,6 +115,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         const payload = {
           starts_at: toApiDatetime(formData.get('starts_at')),
           ends_at: toApiDatetime(formData.get('ends_at')),
+          guide_name: formData.get('guide_name'),
           max_capacity: formData.get('max_capacity') || null,
           available_capacity: formData.get('available_capacity') || null,
           booking_url: formData.get('booking_url'),
@@ -167,6 +171,7 @@ window.addEventListener('DOMContentLoaded', async () => {
       walk_id: Number(formData.get('walk_id')),
       starts_at: toApiDatetime(formData.get('starts_at')),
       ends_at: toApiDatetime(formData.get('ends_at')),
+      guide_name: formData.get('guide_name'),
       max_capacity: formData.get('max_capacity') || null,
       available_capacity: formData.get('available_capacity') || null,
       booking_url: formData.get('booking_url'),

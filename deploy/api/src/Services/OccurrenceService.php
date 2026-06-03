@@ -23,6 +23,7 @@ class OccurrenceService
                 wo.walk_id,
                 wo.starts_at,
                 wo.ends_at,
+            wo.guide_name,
                 wo.max_capacity,
                 wo.available_capacity,
                 wo.booking_url,
@@ -53,7 +54,7 @@ class OccurrenceService
     {
         $stmt = $this->pdo->prepare(
             'SELECT
-                id, walk_id, starts_at, ends_at,
+                id, walk_id, starts_at, ends_at, guide_name,
                 max_capacity, available_capacity,
                 booking_url, booking_embed_url, status,
                 created_at, updated_at
@@ -76,12 +77,12 @@ class OccurrenceService
     {
         $stmt = $this->pdo->prepare(
             'INSERT INTO walk_occurrences (
-                walk_id, starts_at, ends_at,
+                walk_id, starts_at, ends_at, guide_name,
                 max_capacity, available_capacity,
                 booking_url, booking_embed_url, status,
                 created_at, updated_at
             ) VALUES (
-                :walk_id, :starts_at, :ends_at,
+                :walk_id, :starts_at, :ends_at, :guide_name,
                 :max_capacity, :available_capacity,
                 :booking_url, :booking_embed_url, :status,
                 CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
@@ -102,6 +103,7 @@ class OccurrenceService
             'UPDATE walk_occurrences SET
                 starts_at = :starts_at,
                 ends_at = :ends_at,
+                guide_name = :guide_name,
                 max_capacity = :max_capacity,
                 available_capacity = :available_capacity,
                 booking_url = :booking_url,

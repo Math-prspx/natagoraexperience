@@ -70,6 +70,7 @@ CREATE TABLE walk_occurrences (
     walk_id INTEGER NOT NULL,
     starts_at TEXT NOT NULL,
     ends_at TEXT,
+    guide_name TEXT,
     max_capacity INTEGER,
     available_capacity INTEGER,
     booking_url TEXT,

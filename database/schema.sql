@@ -68,6 +68,7 @@ CREATE TABLE walk_occurrences (
     walk_id INT UNSIGNED NOT NULL,
     starts_at DATETIME NOT NULL,
     ends_at DATETIME NULL,
+    guide_name VARCHAR(180) NULL,
     max_capacity INT NULL,
     available_capacity INT NULL,
     booking_url VARCHAR(500) NULL,

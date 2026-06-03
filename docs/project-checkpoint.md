@@ -40,6 +40,17 @@ Points de vigilance avant mise en prod:
 - Plusieurs assets images ont ete ajoutes dans `img/` et doivent etre presents aussi dans `deploy/img/` lors de la livraison.
 - Le dossier `deploy/` n est pas integralement synchro avec les dernieres modifs front source a cette date.
 
+### Mise a jour front + API - 04/06/2026
+
+- Occurrences promenade: affichage de la plage horaire `debut - fin` a la place de la duree.
+- Occurrences promenade: ajout de l affichage du nom du guide sous l horaire avec une icone utilisateur.
+- Detail promenade: nom du lieu dans les occurrences conserve en casse normale (plus de `toUpperCase()`).
+- Admin occurrences: ajout du champ libre `Nom du guide` en creation et edition.
+- API occurrences: ajout du champ `guide_name` sur les endpoints admin et dans la reponse publique `GET /public/walks/{slug}`.
+- Base de donnees: ajout de la colonne `guide_name` sur `walk_occurrences` + migration versionnee `20260604_001`.
+- Cache API: invalidation des cles `walk*` lors des create/update/delete d occurrences pour eviter des details promenade obsoletes.
+- Catalogue: dans le modal de filtres, le bloc "Ou a partir d une date precise" est masque (sans suppression de code), source + deploy.
+
 ---
 
 ## 🏗️ Architecture Technique
@@ -207,6 +218,7 @@ Admin Frontend (HTML/JS séparé)
 **walk_occurrences** (dates/horaires)
 - `id`, `walk_id` (FK, CASCADE DELETE)
 - `starts_at`, `ends_at`
+- `guide_name` (texte libre, nom du guide)
 - `max_capacity`, `available_capacity`
 - `booking_url`, `booking_embed_url` (peuvent override walk)
 - `status` (draft/published/cancelled)

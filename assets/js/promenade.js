@@ -51,6 +51,42 @@ function formatOccurrenceDuration(minutes) {
   return formatDuration(minutes).toUpperCase().replace('DURÉE : ', '');
 }
 
+function formatOccurrenceTime(value) {
+  if (!value) {
+    return '';
+  }
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return '';
+  }
+
+  return date
+    .toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
+    .replace(':', 'h');
+}
+
+function formatOccurrenceTimeRange(occurrence, fallbackDurationMinutes) {
+  const startsAt = occurrence && occurrence.starts_at ? occurrence.starts_at : '';
+  const endsAt = occurrence && occurrence.ends_at ? occurrence.ends_at : '';
+
+  const startTime = formatOccurrenceTime(startsAt);
+  if (!startTime) {
+    return formatOccurrenceDuration(fallbackDurationMinutes);
+  }
+
+  let endTime = formatOccurrenceTime(endsAt);
+  if (!endTime && fallbackDurationMinutes && !Number.isNaN(Number(fallbackDurationMinutes))) {
+    const startDate = new Date(startsAt);
+    if (!Number.isNaN(startDate.getTime())) {
+      const computedEnd = new Date(startDate.getTime() + Number(fallbackDurationMinutes) * 60000);
+      endTime = formatOccurrenceTime(computedEnd.toISOString());
+    }
+  }
+
+  return endTime ? `${startTime} - ${endTime}` : startTime;
+}
+
 function formatHeroDate(dateString) {
   return formatDateLong(dateString, { upper: true, fallback: 'DATE A CONFIRMER' });
 }
@@ -355,12 +391,13 @@ function render(walk) {
           <div class="occurrence-meta">
             <p class="occurrence-meta-line">
               <svg class="occurrence-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2a7 7 0 0 0-7 7c0 5.18 6.12 11.94 6.38 12.22a.83.83 0 0 0 1.24 0C12.88 20.94 19 14.18 19 9a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5Z" fill="currentColor"/></svg>
-              <span>${walk.place_name ? walk.place_name.toUpperCase() : 'LIEU A CONFIRMER'}</span>
+              <span>${walk.place_name || 'Lieu a confirmer'}</span>
             </p>
             <p class="occurrence-meta-line">
               <svg class="occurrence-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2a10 10 0 1 0 10 10A10.01 10.01 0 0 0 12 2Zm1 10.59 3.3 3.29a1 1 0 0 1-1.42 1.42l-3.59-3.59A1 1 0 0 1 11 13V7a1 1 0 0 1 2 0Z" fill="currentColor"/></svg>
-              <span>${formatOccurrenceDuration(walk.duration_minutes)}</span>
+              <span>${formatOccurrenceTimeRange(occ, walk.duration_minutes)}</span>
             </p>
+            ${occ.guide_name ? `<p class="occurrence-meta-line"><svg class="occurrence-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm0 2c-4.42 0-8 2.24-8 5a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1c0-2.76-3.58-5-8-5Z" fill="currentColor"/></svg><span>${occ.guide_name}</span></p>` : ''}
           </div>
           ${renderOccurrenceAction(walk, bookingUrl)}
         </div>

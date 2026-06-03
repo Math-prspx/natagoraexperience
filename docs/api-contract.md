@@ -129,6 +129,7 @@ Le token est obtenu via `POST /admin/login` et expire apres 8h.
   "walk_id": 1,
   "starts_at": "2026-06-15 10:00:00",
   "ends_at": "2026-06-15 12:00:00",
+  "guide_name": "Marie Dupont",
   "max_capacity": 20,
   "available_capacity": 20,
   "booking_url": "https://www.billetweb.fr/...",

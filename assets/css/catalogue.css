@@ -841,7 +841,6 @@ button {
   font-size: clamp(1.65rem, 2.35vw, 2.15rem);
   line-height: 1;
   font-weight: 700;
-  text-transform: uppercase;
 }
 
 .occurrence-meta {
@@ -860,7 +859,6 @@ button {
   font-size: 1.06rem;
   font-weight: 700;
   line-height: 1;
-  text-transform: uppercase;
 }
 
 .occurrence-icon {
@@ -1432,6 +1430,9 @@ button {
   margin-top: 16px;
   font-size: 13px;
   color: rgba(0, 0, 0, 0.65);
+}
+.cat-filters-date-label[hidden] {
+  display: none !important;
 }
 .cat-filters-date-label input[type="date"] {
   padding: 10px 14px;

@@ -85,7 +85,7 @@ $adminMetaController = new \Natagora\API\Controllers\AdminMetaController($pdo);
 $adminSubcategoryController = new \Natagora\API\Controllers\AdminSubcategoryController($pdo, $logger, $cache);
 $adminPlaceController = new \Natagora\API\Controllers\AdminPlaceController($pdo, $logger, $cache);
 $adminWalkController = new \Natagora\API\Controllers\AdminWalkController($pdo, $logger, $cache);
-$adminOccurrenceController = new \Natagora\API\Controllers\AdminOccurrenceController($pdo, $logger);
+$adminOccurrenceController = new \Natagora\API\Controllers\AdminOccurrenceController($pdo, $logger, $cache);
 $adminImageController = new \Natagora\API\Controllers\AdminImageController(dirname(__DIR__) . '/assets/media/uploads', $logger);
 
 // ==========================================

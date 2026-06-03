@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Natagora\API\Controllers;
 
 use PDO;
+use Natagora\API\Cache;
 use Natagora\API\Response;
 use Natagora\API\Router;
 use Natagora\API\Logger;
@@ -17,12 +18,14 @@ class AdminOccurrenceController
     private PDO $pdo;
     private OccurrenceService $service;
     private ?Logger $logger;
+    private ?Cache $cache;
 
-    public function __construct(PDO $pdo, ?Logger $logger = null)
+    public function __construct(PDO $pdo, ?Logger $logger = null, ?Cache $cache = null)
     {
         $this->pdo     = $pdo;
         $this->service = new OccurrenceService($pdo);
         $this->logger  = $logger;
+        $this->cache   = $cache;
     }
 
     public function list(): void
@@ -48,6 +51,7 @@ class AdminOccurrenceController
             'walk_id' => $walkId,
             'starts_at' => $startsAt,
             'ends_at' => Validator::optionalString($payload, 'ends_at'),
+            'guide_name' => Validator::optionalString($payload, 'guide_name'),
             'max_capacity' => $maxCapacity,
             'available_capacity' => Validator::optionalInt($payload, 'available_capacity') ?? $maxCapacity,
             'booking_url' => Validator::optionalString($payload, 'booking_url'),
@@ -57,6 +61,7 @@ class AdminOccurrenceController
 
         $occurrence = $this->service->create($data);
         $this->logger?->info('occurrence.created', ['id' => $occurrence['id'], 'walk_id' => $occurrence['walk_id']]);
+        $this->cache?->invalidateGroup('walk');
         Response::json(['item' => $occurrence], 201);
     }
 
@@ -71,6 +76,7 @@ class AdminOccurrenceController
         $data = [
             'starts_at' => $startsAt,
             'ends_at' => Validator::optionalString($payload, 'ends_at'),
+            'guide_name' => Validator::optionalString($payload, 'guide_name'),
             'max_capacity' => $maxCapacity,
             'available_capacity' => Validator::optionalInt($payload, 'available_capacity') ?? $maxCapacity,
             'booking_url' => Validator::optionalString($payload, 'booking_url'),
@@ -80,6 +86,7 @@ class AdminOccurrenceController
 
         $occurrence = $this->service->update($occurrenceId, $data);
         $this->logger?->info('occurrence.updated', ['id' => $occurrenceId]);
+        $this->cache?->invalidateGroup('walk');
         Response::json(['item' => $occurrence]);
     }
 
@@ -88,6 +95,7 @@ class AdminOccurrenceController
         $occurrenceId = (int) $id;
         $this->service->delete($occurrenceId);
         $this->logger?->info('occurrence.deleted', ['id' => $occurrenceId]);
+        $this->cache?->invalidateGroup('walk');
 
         Response::json([
             'deleted' => true,
