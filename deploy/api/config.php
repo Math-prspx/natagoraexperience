@@ -2,6 +2,11 @@
 
 declare(strict_types=1);
 
+$env = static function (string $key, mixed $default = null): mixed {
+    $value = getenv($key);
+    return $value === false ? $default : $value;
+};
+
 // ============================================================
 //  Configuration production — OVH (nothumannatagora.mysql.db)
 //  ⚠️  Ne jamais committer ce fichier avec de vrais credentials
@@ -9,34 +14,25 @@ declare(strict_types=1);
 
 $config = [
     'db' => [
-        'driver'      => 'mysql',
-        'host'        => 'nothumannatagora.mysql.db',
-        'port'        => 3306,
-        'name'        => 'nothumannatagora',
-        'user'        => 'nothumannatagora',
-        'pass'        => 'Test12345',
-        'charset'     => 'utf8mb4',
-        'sqlite_path' => __DIR__ . '/../database/local.sqlite',
+        'driver'      => (string) $env('DB_DRIVER', 'mysql'),
+        'host'        => (string) $env('DB_HOST', 'nothumannatagora.mysql.db'),
+        'port'        => (int) $env('DB_PORT', 3306),
+        'name'        => (string) $env('DB_NAME', 'nothumannatagora'),
+        'user'        => (string) $env('DB_USER', 'nothumannatagora'),
+        'pass'        => (string) $env('DB_PASS', 'Test12345'),
+        'charset'     => (string) $env('DB_CHARSET', 'utf8mb4'),
+        'sqlite_path' => (string) $env('DB_SQLITE_PATH', __DIR__ . '/../database/local.sqlite'),
     ],
     'app' => [
-        'base_url'       => '/api',
-        'default_locale' => 'fr',
+        'base_url'       => (string) $env('APP_BASE_URL', '/api'),
+        'default_locale' => (string) $env('APP_DEFAULT_LOCALE', 'fr'),
     ],
     'auth' => [
-        'username'      => 'admin',
-        'password_hash' => '$2y$12$XHjQo1sXuuvz4L7FNJv9LePYsbyAey661Np5qXcJn2ueGifLsl3Hm',
-        'secret'        => 'b5f778f42f45bfd3babd769f29c35382bf716da4c3c2b3ac0301f44ed80627ae',
-        'token_ttl'     => 28800,
+        'username'      => (string) $env('ADMIN_USERNAME', 'admin'),
+        'password_hash' => (string) $env('ADMIN_PASSWORD_HASH', '$2y$12$XHjQo1sXuuvz4L7FNJv9LePYsbyAey661Np5qXcJn2ueGifLsl3Hm'),
+        'secret'        => (string) $env('ADMIN_AUTH_SECRET', 'b5f778f42f45bfd3babd769f29c35382bf716da4c3c2b3ac0301f44ed80627ae'),
+        'token_ttl'     => (int) $env('ADMIN_TOKEN_TTL', 28800),
     ],
 ];
-
-// Surcharges optionnelles via variables d'environnement
-if (getenv('DB_HOST'))             $config['db']['host']              = getenv('DB_HOST');
-if (getenv('DB_NAME'))             $config['db']['name']              = getenv('DB_NAME');
-if (getenv('DB_USER'))             $config['db']['user']              = getenv('DB_USER');
-if (getenv('DB_PASS'))             $config['db']['pass']              = getenv('DB_PASS');
-if (getenv('ADMIN_USERNAME'))      $config['auth']['username']        = getenv('ADMIN_USERNAME');
-if (getenv('ADMIN_PASSWORD_HASH')) $config['auth']['password_hash']   = getenv('ADMIN_PASSWORD_HASH');
-if (getenv('ADMIN_AUTH_SECRET'))   $config['auth']['secret']          = getenv('ADMIN_AUTH_SECRET');
 
 return $config;

@@ -20,6 +20,12 @@ spl_autoload_register(function (string $class): void {
     }
 });
 
+// Load optional .env files (local root and api folder)
+\Natagora\API\Env::load([
+    dirname(__DIR__) . '/.env',
+    __DIR__ . '/.env',
+]);
+
 // Load config
 $config = require __DIR__ . '/config.php';
 

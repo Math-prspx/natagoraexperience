@@ -30,14 +30,26 @@ Depannage local:
 
 ## 2) Configuration API
 1. Copier `api/config.example.php` vers `api/config.php` si besoin.
-2. Renseigner les variables DB dans `api/config.php` ou via variables d environnement:
+2. Copier `.env.example` vers `.env` a la racine du projet (fichier ignore par git).
+3. Renseigner les variables DB/Auth dans `.env` ou via variables d environnement du serveur:
   - `DB_DRIVER` (`mysql` ou `sqlite`)
-   - `DB_HOST`
-   - `DB_PORT`
-   - `DB_NAME`
-   - `DB_USER`
-   - `DB_PASS`
+  - `DB_HOST`
+  - `DB_PORT`
+  - `DB_NAME`
+  - `DB_USER`
+  - `DB_PASS`
+  - `DB_CHARSET`
   - `DB_SQLITE_PATH`
+  - `ADMIN_USERNAME`
+  - `ADMIN_PASSWORD_HASH`
+  - `ADMIN_AUTH_SECRET`
+  - `ADMIN_TOKEN_TTL`
+  - `DEBUG_MODE`
+
+Chargement config (priorite):
+1. variables d environnement du processus
+2. valeurs du fichier `.env` (si present)
+3. fallback `api/config.php`
 
 ## 3) Apache / OVH
 - Le fichier `api/.htaccess` redirige les routes vers `api/index.php`.
@@ -72,8 +84,15 @@ Depannage local:
 
 ## 5) Securite
 - L admin est protege par authentification Bearer token HMAC-SHA256.
-- Les credentials et le secret sont configures dans `api/config.php`.
+- Les credentials et le secret doivent etre fournis par variables d environnement / `.env`.
 - Avant production, changer les credentials par defaut et desactiver le debug si encore actif.
+
+## 5bis) GitLab CI / Deploiement AWS
+
+- Recommande: stocker les secrets uniquement dans les variables masquees/protegees GitLab CI.
+- Ne jamais committer de fichier `.env` avec des valeurs reelles.
+- Le depot contient `.env.example` pour documenter les cles attendues.
+- Le pipeline de deploiement peut injecter les variables d environnement sur les instances AWS (ou ecrire un `.env` cible lors du deploy).
 
 ## 6) Pieges MySQL OVH (mutualise)
 
