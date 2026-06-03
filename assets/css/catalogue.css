@@ -862,7 +862,7 @@ button {
 }
 
 .occurrence-icon {
-  width: 18px;
+    text-transform: none;
   height: 18px;
   flex: 0 0 18px;
   color: #a0a0a0;

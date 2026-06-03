@@ -1598,7 +1598,7 @@ body.menu-open {
   font-size: 3.5vw;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.02em;
+  text-transform: none;
   line-height: 1.1;
 }
 .overlay-main-link:hover,
