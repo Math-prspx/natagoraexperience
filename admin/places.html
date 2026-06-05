@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Reserves</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/admin-v2.css">
+</head>
+<body data-admin-page="places">
+  <div class="admin-shell">
+    <aside class="sidebar">
+      <a class="brand" href="index.html">NATAGORA ADMIN</a>
+      <a class="back-site" href="../index.html">Retour au site public</a>
+      <button type="button" class="back-site" onclick="window.AdminV2.logout()" style="cursor:pointer;background:none;border:none;text-align:left;width:100%;color:inherit">Déconnexion</button>
+      <nav class="side-nav" aria-label="Navigation admin">
+        <a data-nav="dashboard" href="index.html">Dashboard</a>
+        <a data-nav="walks" href="walks.html">Promenades</a>
+        <a data-nav="occurrences" href="occurrences.html">Occurrences</a>
+        <a data-nav="places" href="places.html">Reserves</a>
+        <a data-nav="taxonomy" href="taxonomie.html">Taxonomie</a>
+        <a data-nav="settings" href="settings.html">Parametres</a>
+      </nav>
+    </aside>
+
+    <div class="main">
+      <header class="main-header">
+        <div>
+          <h1>Reserves</h1>
+          <p>Gestion du contenu des pages reserves et reserve-detail.</p>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <section class="panel">
+          <div class="panel-head">
+            <h2>Reserves existantes</h2>
+            <button type="button" class="btn" id="newReserveBtn">+ Nouvelle reserve</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Nom</th>
+                  <th>Slug</th>
+                  <th>Description courte</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="placesBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel" id="reserveFormPanel" hidden>
+          <form id="reserveForm" class="stack">
+            <h2 id="reserveFormTitle">Nouvelle reserve</h2>
+            <input type="hidden" name="id" id="reserveId">
+
+            <section class="form-group-block">
+              <h3 class="form-group-title">1. Nom de la reserve et image principale</h3>
+              <div class="grid-2">
+                <label>Nom
+                  <input name="name_fr" required>
+                </label>
+                <label>Slug
+                  <input name="slug" placeholder="montagne-saint-pierre">
+                </label>
+              </div>
+              <div class="grid-2">
+                <label>Image principale (URL)
+                  <input name="cover_image_url" placeholder="/assets/media/uploads/reserve.jpg">
+                </label>
+                <label>Televerser image principale
+                  <input id="reserveCoverUploadInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif">
+                </label>
+              </div>
+              <div class="grid-2">
+                <label>Apercu image principale
+                  <div class="admin-image-preview-wrap">
+                    <img id="reserveCoverPreview" class="admin-image-preview hidden" alt="Apercu image reserve">
+                    <button type="button" id="reserveCoverRemoveBtn" class="admin-image-remove hidden" aria-label="Supprimer l'image principale">Supprimer l'image</button>
+                  </div>
+                </label>
+              </div>
+            </section>
+
+            <div class="form-divider" aria-hidden="true"></div>
+
+            <section class="form-group-block">
+              <h3 class="form-group-title">2. Titre (headline) et resume</h3>
+              <label>Headline detail (hero)
+                <input name="headline_fr" placeholder="Headline 35 car. max">
+              </label>
+              <label>Description courte (listing reserves)
+                <textarea name="short_description_fr"></textarea>
+              </label>
+            </section>
+
+            <div class="form-divider" aria-hidden="true"></div>
+
+            <section class="form-group-block">
+              <h3 class="form-group-title">3. Infos cles</h3>
+              <div class="grid-3">
+                <label>Valeur carte
+                  <input name="metric_map_value" placeholder="Accessible">
+                </label>
+                <label>Superficie (ha)
+                  <input name="area_ha" type="number" min="0" step="1" placeholder="350">
+                </label>
+                <label>Créée en
+                  <input name="created_year" type="number" min="0" step="1" placeholder="1974">
+                </label>
+              </div>
+            </section>
+
+            <div class="form-divider" aria-hidden="true"></div>
+
+            <section class="form-group-block">
+              <h3 class="form-group-title">4. Description longue</h3>
+              <label>Description longue (reserve detail)
+                <textarea name="long_description_fr"></textarea>
+              </label>
+
+              <div class="grid-2">
+                <label>Image de contenu (URL)
+                  <input name="intro_image_url" placeholder="/assets/media/uploads/reserve-intro.jpg">
+                </label>
+                <label>Televerser image de contenu
+                  <input id="reserveIntroUploadInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif">
+                </label>
+              </div>
+              <div class="grid-2">
+                <label>Apercu image de contenu
+                  <div class="admin-image-preview-wrap">
+                    <img id="reserveIntroPreview" class="admin-image-preview hidden" alt="Apercu image de contenu">
+                    <button type="button" id="reserveIntroRemoveBtn" class="admin-image-remove hidden" aria-label="Supprimer l'image de contenu">Supprimer l'image</button>
+                  </div>
+                </label>
+              </div>
+            </section>
+
+            <div class="form-divider" aria-hidden="true"></div>
+
+            <section class="form-group-block">
+              <h3 class="form-group-title">5. Spécificités (carrousel)</h3>
+
+              <div class="form-subblock">
+                <h4 class="form-subblock-title">Spécificité 1</h4>
+                <div class="grid-2">
+                  <label>Titre
+                    <input name="spec_1_title" placeholder="Titre court">
+                  </label>
+                  <label>Texte
+                    <input name="spec_1_text" placeholder="Texte spécificité">
+                  </label>
+                </div>
+                <div class="grid-2">
+                  <label>Image (URL)
+                    <input name="spec_1_image" placeholder="/assets/media/uploads/spec1.jpg">
+                  </label>
+                  <label>Televerser image
+                    <input id="spec1UploadInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif">
+                  </label>
+                </div>
+                <div class="grid-2">
+                  <label>Apercu image
+                    <div class="admin-image-preview-wrap">
+                      <img id="spec1Preview" class="admin-image-preview hidden" alt="Apercu spécificité 1">
+                      <button type="button" id="spec1RemoveBtn" class="admin-image-remove hidden" aria-label="Supprimer l'image spécificité 1">Supprimer l'image</button>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-subblock">
+                <h4 class="form-subblock-title">Spécificité 2</h4>
+                <div class="grid-2">
+                  <label>Titre
+                    <input name="spec_2_title" placeholder="Titre court">
+                  </label>
+                  <label>Texte
+                    <input name="spec_2_text" placeholder="Texte spécificité">
+                  </label>
+                </div>
+                <div class="grid-2">
+                  <label>Image (URL)
+                    <input name="spec_2_image" placeholder="/assets/media/uploads/spec2.jpg">
+                  </label>
+                  <label>Televerser image
+                    <input id="spec2UploadInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif">
+                  </label>
+                </div>
+                <div class="grid-2">
+                  <label>Apercu image
+                    <div class="admin-image-preview-wrap">
+                      <img id="spec2Preview" class="admin-image-preview hidden" alt="Apercu spécificité 2">
+                      <button type="button" id="spec2RemoveBtn" class="admin-image-remove hidden" aria-label="Supprimer l'image spécificité 2">Supprimer l'image</button>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-subblock">
+                <h4 class="form-subblock-title">Spécificité 3</h4>
+                <div class="grid-2">
+                  <label>Titre
+                    <input name="spec_3_title" placeholder="Titre court">
+                  </label>
+                  <label>Texte
+                    <input name="spec_3_text" placeholder="Texte spécificité">
+                  </label>
+                </div>
+                <div class="grid-2">
+                  <label>Image (URL)
+                    <input name="spec_3_image" placeholder="/assets/media/uploads/spec3.jpg">
+                  </label>
+                  <label>Televerser image
+                    <input id="spec3UploadInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif">
+                  </label>
+                </div>
+                <div class="grid-2">
+                  <label>Apercu image
+                    <div class="admin-image-preview-wrap">
+                      <img id="spec3Preview" class="admin-image-preview hidden" alt="Apercu spécificité 3">
+                      <button type="button" id="spec3RemoveBtn" class="admin-image-remove hidden" aria-label="Supprimer l'image spécificité 3">Supprimer l'image</button>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </section>
+
+            <div class="form-divider" aria-hidden="true"></div>
+
+            <section class="form-group-block">
+              <h3 class="form-group-title">6. Accordéons "Infos pratiques"</h3>
+              <p class="form-hint">Le contenu peut inclure du HTML simple (listes &lt;ul&gt;, &lt;p&gt;, &lt;strong&gt;…).</p>
+
+              <div class="form-subblock">
+                <h4 class="form-subblock-title">Accordéon 1 — Faune &amp; Flore</h4>
+                <label>Titre de l'accordéon
+                  <input name="accordion1_title" placeholder="Faune et Flore">
+                </label>
+                <label>Contenu (HTML basique accepté)
+                  <textarea name="accordion1_text" rows="5" placeholder="Inventaires naturalistes, habitats remarquables…"></textarea>
+                </label>
+              </div>
+
+              <div class="form-subblock">
+                <h4 class="form-subblock-title">Accordéon 2 — Accès</h4>
+                <label>Titre de l'accordéon
+                  <input name="accordion2_title" placeholder="Comment accéder ?">
+                </label>
+                <label>Contenu (HTML basique accepté)
+                  <textarea name="accordion2_text" rows="5" placeholder="Accès en transports en commun, parkings…"></textarea>
+                </label>
+              </div>
+            </section>
+
+            <div class="grid-2">
+              <button type="submit" id="reserveSaveBtn">Ajouter reserve</button>
+              <button type="button" class="btn btn-secondary" id="reserveCancelBtn">Annuler</button>
+            </div>
+          </form>
+        </section>
+
+        <p id="status" class="status"></p>
+      </main>
+    </div>
+  </div>
+
+  <script src="../assets/js/admin-v2-common.js" defer></script>
+  <script src="../assets/js/admin-places.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Promenades</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/admin-v2.css">
+</head>
+<body data-admin-page="walks">
+  <div class="admin-shell">
+    <aside class="sidebar">
+      <a class="brand" href="index.html">NATAGORA ADMIN</a>
+      <a class="back-site" href="../index.html">Retour au site public</a>
+      <button type="button" class="back-site" onclick="window.AdminV2.logout()" style="cursor:pointer;background:none;border:none;text-align:left;width:100%;color:inherit">Déconnexion</button>
+      <nav class="side-nav" aria-label="Navigation admin">
+        <a data-nav="dashboard" href="index.html">Dashboard</a>
+        <a data-nav="walks" href="walks.html">Promenades</a>
+        <a data-nav="occurrences" href="occurrences.html">Occurrences</a>
+        <a data-nav="places" href="places.html">Reserves</a>
+        <a data-nav="taxonomy" href="taxonomie.html">Taxonomie</a>
+        <a data-nav="settings" href="settings.html">Parametres</a>
+      </nav>
+    </aside>
+
+    <div class="main">
+      <header class="main-header">
+        <div>
+          <h1>Promenades</h1>
+          <p>Liste, filtrage et acces edition des fiches.</p>
+        </div>
+        <a class="btn btn-primary" href="walk-edit.html">Nouvelle promenade</a>
+      </header>
+
+      <main class="main-content">
+        <section class="panel grid-4">
+          <label>Recherche texte
+            <input id="searchInput" placeholder="Titre, slug, lieu...">
+          </label>
+          <label>Famille
+            <select id="familyFilter">
+              <option value="">Toutes</option>
+            </select>
+          </label>
+          <label>Statut
+            <select id="statusFilter">
+              <option value="">Tous</option>
+              <option value="published">Publie</option>
+              <option value="draft">Brouillon</option>
+              <option value="archived">Archive</option>
+            </select>
+          </label>
+          <label>&nbsp;
+            <button id="reloadBtn" type="button">Rafraichir</button>
+          </label>
+        </section>
+
+        <section class="panel">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Titre</th>
+                  <th>Famille</th>
+                  <th>Sous-categorie</th>
+                  <th>Lieu</th>
+                  <th>Occurrences</th>
+                  <th>Statut</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="walksBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <p id="status" class="status"></p>
+      </main>
+    </div>
+  </div>
+
+  <script src="../assets/js/admin-v2-common.js" defer></script>
+  <script src="../assets/js/admin-walks.js" defer></script>
+</body>
+</html>

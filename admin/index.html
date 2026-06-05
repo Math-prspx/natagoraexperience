@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/admin-v2.css">
+</head>
+<body data-admin-page="dashboard">
+  <div class="admin-shell">
+    <aside class="sidebar">
+      <a class="brand" href="index.html">NATAGORA ADMIN</a>
+      <a class="back-site" href="../index.html">Retour au site public</a>
+      <button type="button" class="back-site" onclick="window.AdminV2.logout()" style="cursor:pointer;background:none;border:none;text-align:left;width:100%;color:inherit">Déconnexion</button>
+      <nav class="side-nav" aria-label="Navigation admin">
+        <a data-nav="dashboard" href="index.html">Dashboard</a>
+        <a data-nav="walks" href="walks.html">Promenades</a>
+        <a data-nav="occurrences" href="occurrences.html">Occurrences</a>
+        <a data-nav="places" href="places.html">Reserves</a>
+        <a data-nav="taxonomy" href="taxonomie.html">Taxonomie</a>
+        <a data-nav="settings" href="settings.html">Parametres</a>
+      </nav>
+    </aside>
+
+    <div class="main">
+      <header class="main-header">
+        <div>
+          <h1>Dashboard</h1>
+          <p>Vue d'ensemble du catalogue et des prochaines sorties.</p>
+        </div>
+        <a class="btn btn-primary" href="walk-edit.html">Nouvelle promenade</a>
+      </header>
+
+      <main class="main-content">
+        <section id="kpis" class="kpi-grid"></section>
+
+        <section class="panel">
+          <h2>Prochaines occurrences</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Promenade</th>
+                  <th>Date</th>
+                  <th>Capacite</th>
+                  <th>Statut</th>
+                </tr>
+              </thead>
+              <tbody id="upcomingBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>Actions rapides</h2>
+          <div class="grid-3">
+            <a class="btn btn-secondary" href="walk-edit.html">Creer une promenade</a>
+            <a class="btn btn-secondary" href="occurrences.html">Ajouter une occurrence</a>
+            <a class="btn btn-secondary" href="places.html">Ajouter une reserve</a>
+          </div>
+        </section>
+
+        <p id="status" class="status"></p>
+      </main>
+    </div>
+  </div>
+
+  <script src="../assets/js/admin-v2-common.js" defer></script>
+  <script src="../assets/js/admin-dashboard.js" defer></script>
+</body>
+</html>
