@@ -94,6 +94,14 @@ Chargement config (priorite):
 - Le depot contient `.env.example` pour documenter les cles attendues.
 - Le pipeline de deploiement peut injecter les variables d environnement sur les instances AWS (ou ecrire un `.env` cible lors du deploy).
 
+## 5ter) Checklist avant transfert hebergeur
+
+1. Verifier que les derniers commits sont pushes sur le repository a partager.
+2. Verifier que `.env` n est pas versionne (gitignore OK).
+3. Verifier que `.env.example` contient toutes les cles necessaires au runtime.
+4. Remplacer toute valeur sensible restante dans `deploy/api/config.php` par placeholders (les vraies valeurs doivent venir des variables GitLab CI / serveur).
+5. Fournir a l hebergeur la liste des variables d environnement attendues (DB_*, ADMIN_*, APP_*, DEBUG_MODE).
+
 ## 6) Pieges MySQL OVH (mutualise)
 
 ### DDL implicit commit

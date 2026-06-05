@@ -51,6 +51,18 @@ Points de vigilance avant mise en prod:
 - Cache API: invalidation des cles `walk*` lors des create/update/delete d occurrences pour eviter des details promenade obsoletes.
 - Catalogue: dans le modal de filtres, le bloc "Ou a partir d une date precise" est masque (sans suppression de code), source + deploy.
 
+### Preparation livraison hebergeur - 04/06/2026
+
+- Preparation CI/CD: structure prete pour un deploiement GitLab CI vers AWS (code compatible variables d environnement).
+- Ajout d un chargeur `.env` minimal sans dependance externe (`api/src/Env.php` + `deploy/api/src/Env.php`).
+- Chargement de `.env` branche dans les entrypoints API (`api/index.php` + `deploy/api/index.php`) avec fallback existant conserve.
+- Ajout de `.env.example` a la racine avec toutes les cles attendues (DB, app, auth, debug).
+- `api/config.example.php` mis a jour pour lecture des variables d environnement.
+- `docs/setup.md` enrichi pour la procedure OVH/GitLab CI et la priorite de resolution de config.
+
+Point a finaliser avant transfert GitLab hebergeur:
+- Neutraliser les valeurs sensibles de `deploy/api/config.php` (garder uniquement placeholders + variables d environnement).
+
 ---
 
 ## 🏗️ Architecture Technique
