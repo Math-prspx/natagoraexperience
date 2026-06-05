@@ -28,6 +28,10 @@ Depannage local:
 2. Importer `database/schema.sql`.
 3. Importer `database/seed.sql`.
 
+Export utile:
+- `php scripts/export-mysql.php`
+- ecrit un dump SQL dans `database/exports/` a partir des variables `DB_*`
+
 ## 2) Configuration API
 1. Copier `api/config.example.php` vers `api/config.php` si besoin.
 2. Copier `.env.example` vers `.env` a la racine du projet (fichier ignore par git).
@@ -48,7 +52,7 @@ Depannage local:
 
 Chargement config (priorite):
 1. variables d environnement du processus
-2. valeurs du fichier `.env` (si present)
+2. valeurs des fichiers `.env`, `.env.local`, `.env.deploy.local` (si presents, projet puis `api/`)
 3. fallback `api/config.php`
 
 ## 3) Apache / OVH
@@ -69,6 +73,7 @@ Chargement config (priorite):
     - `assets/css/*`
     - `assets/js/*`
     - `img/*` puis `deploy/img/*`
+    - ne pas oublier les nouveaux assets references par le HTML, par exemple `img/v3-03.png`
   3. Verifier la casse exacte des fichiers image (`.jpg` vs `.JPG`) car OVH/Linux est case-sensitive.
   4. Ouvrir les pages publiques critiques apres upload:
     - `index.html`

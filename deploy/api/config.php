@@ -19,7 +19,7 @@ $config = [
         'port'        => (int) $env('DB_PORT', 3306),
         'name'        => (string) $env('DB_NAME', 'REPLACE_DB_NAME'),
         'user'        => (string) $env('DB_USER', 'REPLACE_DB_USER'),
-        'pass'        => (string) $env('DB_PASS', 'REPLACE_DB_PASS'),
+        'pass'        => (string) $env('DB_PASS', $env('DB_PASSWORD', 'REPLACE_DB_PASS')),
         'charset'     => (string) $env('DB_CHARSET', 'utf8mb4'),
         'sqlite_path' => (string) $env('DB_SQLITE_PATH', __DIR__ . '/../database/local.sqlite'),
     ],

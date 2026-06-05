@@ -3,12 +3,14 @@ api/config.php
 .env
 .env.local
 .env.*.local
+.env.deploy.local
 
 # Local databases
 database/local.sqlite
 database/*.sqlite-journal
 database/*.sqlite-wal
 database/*.sqlite-shm
+database/exports/
 
 # Uploads (user-generated content)
 assets/media/uploads/*

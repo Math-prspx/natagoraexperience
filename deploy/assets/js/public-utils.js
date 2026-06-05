@@ -330,7 +330,7 @@ window.PublicUtils = (() => {
   function updateFooterYear() {
     const year = new Date().getFullYear();
     document.querySelectorAll('.footer-copyright').forEach((el) => {
-      el.textContent = '© ' + year + ' Natagora, tous droits réservés';
+      el.innerHTML = '© ' + year + ' Natagora, tous droits réservés - <a href="https://www.natagora.be/privacy" target="_blank" rel="noopener noreferrer">Politique de confidentialité</a>';
     });
   }
 

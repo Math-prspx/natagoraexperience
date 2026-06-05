@@ -63,6 +63,16 @@ Points de vigilance avant mise en prod:
 Point a finaliser avant transfert GitLab hebergeur:
 - Neutraliser les valeurs sensibles de `deploy/api/config.php` (garder uniquement placeholders + variables d environnement).
 
+### Ajustements front + config locale - 05/06/2026
+
+- Home `index.html`: remplacement du titre hero par le visuel `img/v3-03.png` avec classe dediee `hero-logo`.
+- Home `style.css`: hero elargi et intro en pleine largeur pour accompagner le nouveau visuel d en-tete.
+- Footer public: ajout d un lien "Politique de confidentialite" injecte par `assets/js/public-utils.js` et son miroir `deploy/assets/js/public-utils.js`.
+- API source + deploy: chargement et priorite etendus aux fichiers `.env.local` et `.env.deploy.local`.
+- `.gitignore`: ajout de `.env.deploy.local` pour eviter toute fuite de configuration locale de livraison.
+- `deploy/`: synchronisation de `index.html`, `assets/css/style.css`, `assets/js/public-utils.js` et ajout requis du nouvel asset `img/v3-03.png`.
+- Outil local: ajout du script `scripts/export-mysql.php` pour exporter une base MySQL vers `database/exports/` sans versionner les dumps generes.
+
 ---
 
 ## 🏗️ Architecture Technique

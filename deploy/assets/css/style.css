@@ -703,13 +703,13 @@ a {
 .hero-content {
   position: relative;
   z-index: 1;
-  width: min(940px, 100%);
+  width: min(1280px, 100%);
   margin: 0 auto;
   padding: 0 10vw;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 25px;
+  gap: 15px;
   text-align: center;
 }
 
@@ -720,7 +720,11 @@ a {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: #dce7aa;
-  width: 40vw;
+}
+
+.hero-logo {
+  width: 45vh;
+  height: auto;
 }
 
 .hero-title {
@@ -736,7 +740,7 @@ a {
 
 .hero-intro {
   margin: 0;
-  width: 40vw;
+  width: 100%;
   font-size: 22px;
   line-height: 1.5;
   padding-bottom: 1vw;
