@@ -18,9 +18,5 @@ deploy:
         --exclude='.gitlab-ci.yml'
         --exclude='api/.env'
         ./ "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH"
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-      changes:
-        - "**/*"
   environment:
     name: production
