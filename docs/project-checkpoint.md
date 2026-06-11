@@ -190,8 +190,7 @@ Admin Frontend (HTML/JS séparé)
 - `docs/setup.md` - Instructions déploiement
 - `docs/architecture.md` - Vue d'ensemble projet
 - `docs/api-contract.md` - Documentation API
-- `docs/refactoring-architecture-2026.md` - Documentation refactoring (Mai 2026)
-- `docs/check-complet-20260531.md` - Rapport de santé système (31/05/2026)
+- `docs/project-checkpoint.md` - État courant et plan de travail
 
 ### Scripts
 - `scripts/init-local.php` - Initialisation SQLite
@@ -511,5 +510,22 @@ DB_SQLITE_PATH=/path/to/local.sqlite
 
 ---
 
-*Dernière mise à jour: 02 juin 2026 - Snapshot front + verification coherence assets*  
-*Voir [check-complet-20260531.md](check-complet-20260531.md) pour rapport détaillé*
+## 🧭 Plan de travail (prochaine session)
+
+Statut de cadrage validé le 11/06/2026. Cette section décrit le plan demandé, sans exécution des points 1 et 2 pour l'instant.
+
+### Point 0 — Documentation (fait)
+- Mettre à jour la documentation avec le plan ci-dessous.
+
+### Point 1 — À faire
+- Implémenter la création de compte admin.
+- Stocker les utilisateurs admin en base de données.
+- Prévoir un flux de récupération/réinitialisation du mot de passe.
+
+### Point 2 — À faire
+- Préparer une release propre et rapide à publier dès l'accès GitLab disponible.
+- Viser un déploiement autonome sans dépendre d'une intervention manuelle de l'hébergeur.
+
+---
+
+*Dernière mise à jour: 11 juin 2026 - Nettoyage documentation et plan de travail validé*
