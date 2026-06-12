@@ -809,10 +809,14 @@ button {
 }
 
 .occurrence {
-  padding: 12px 0;
+  padding: 14px 0;
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr) auto;
-  gap: 20px;
+  grid-template-columns: minmax(0, 65%) minmax(0, 30%);
+  grid-template-areas:
+    'date cta'
+    'meta meta';
+  column-gap: 5%;
+  gap: 10px;
   align-items: center;
   border-bottom: 2px dotted #b8b8b8;
 }
@@ -822,8 +826,12 @@ button {
 }
 
 .occurrence-date-block {
-  min-width: 0;
-  padding-bottom: 1vh;
+  grid-area: date;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  max-width: 100%;
 }
 
 .occurrence-day {
@@ -836,16 +844,18 @@ button {
 }
 
 .occurrence-date {
-  margin: 4px 0 0;
+  margin: 0;
   color: #101010;
-  font-size: clamp(1.65rem, 2.35vw, 2.15rem);
+  font-size: 1.55rem;
   line-height: 1;
   font-weight: 700;
 }
 
 .occurrence-meta {
+  grid-area: meta;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 8px;
   min-width: 0;
 }
@@ -856,26 +866,28 @@ button {
   align-items: center;
   gap: 8px;
   color: #1e1e1e;
-  font-size: 1.06rem;
-  font-weight: 700;
+  font-size: 0.82rem;
+  font-weight: 500;
   line-height: 1;
 }
 
 .occurrence-icon {
-    text-transform: none;
-  height: 18px;
-  flex: 0 0 18px;
+  text-transform: none;
+  width: 14px;
+  height: 14px;
+  flex: 0 0 14px;
   color: #a0a0a0;
 }
 
 .occurrence-book {
-  min-width: 148px;
+  grid-area: cta;
+  min-width: 0;
   width: 100%;
-  max-width: 190px;
+  max-width: none;
   padding: var(--cta-pad-md);
   font-size: var(--cta-font-md);
   border-radius: var(--cta-radius);
-  justify-self: end;
+  justify-self: stretch;
 }
 
 .occurrence-book[disabled] {
@@ -1005,24 +1017,28 @@ button {
   }
 
   .occurrence {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
-    gap: 14px;
+    grid-template-columns: minmax(0, 65%) minmax(0, 30%);
+    grid-template-areas:
+      'date cta'
+      'meta meta';
+    column-gap: 5%;
+    gap: 10px;
+    padding: 14px 0;
   }
 
   .occurrence-meta-line {
-    font-size: 0.92rem;
+    font-size: 0.82rem;
   }
 
   .occurrence-icon {
-    width: 16px;
-    height: 16px;
-    flex-basis: 16px;
+    width: 14px;
+    height: 14px;
+    flex-basis: 14px;
   }
 
   .occurrence-book {
-    min-width: 138px;
-    min-height: 46px;
-    font-size: 0.9rem;
+    width: 100%;
+    min-width: 0;
   }
 
   .detail-gallery,
@@ -1201,7 +1217,11 @@ button {
   }
 
   .occurrence {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 65%) minmax(0, 30%);
+    grid-template-areas:
+      'date cta'
+      'meta meta';
+    column-gap: 5%;
     gap: 10px;
     padding: 14px 0;
   }

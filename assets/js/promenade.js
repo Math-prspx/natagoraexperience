@@ -44,7 +44,15 @@ function formatOccurrenceDay(dateString) {
 }
 
 function formatOccurrenceDateHeading(dateString) {
-  return formatDateLong(dateString, { upper: true });
+  const date = new Date(dateString);
+  if (Number.isNaN(date.getTime())) {
+    return 'DATE A CONFIRMER';
+  }
+
+  const day = String(date.getDate()).padStart(2, '0');
+  const rawMonth = date.toLocaleDateString('fr-FR', { month: 'long' });
+  const month = (rawMonth || '').slice(0, 4).toUpperCase();
+  return `${day} ${month}`;
 }
 
 function formatOccurrenceDuration(minutes) {
@@ -397,7 +405,7 @@ function render(walk) {
               <svg class="occurrence-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2a10 10 0 1 0 10 10A10.01 10.01 0 0 0 12 2Zm1 10.59 3.3 3.29a1 1 0 0 1-1.42 1.42l-3.59-3.59A1 1 0 0 1 11 13V7a1 1 0 0 1 2 0Z" fill="currentColor"/></svg>
               <span>${formatOccurrenceTimeRange(occ, walk.duration_minutes)}</span>
             </p>
-            ${occ.guide_name ? `<p class="occurrence-meta-line"><svg class="occurrence-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm0 2c-4.42 0-8 2.24-8 5a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1c0-2.76-3.58-5-8-5Z" fill="currentColor"/></svg><span>${occ.guide_name}</span></p>` : ''}
+            ${occ.guide_name ? `<p class="occurrence-meta-line"><svg class="occurrence-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2a10 10 0 1 0 10 10A10.01 10.01 0 0 0 12 2Zm4.24 6.34-1.8 6.02a1 1 0 0 1-.68.68l-6.02 1.8a.5.5 0 0 1-.62-.62l1.8-6.02a1 1 0 0 1 .68-.68l6.02-1.8a.5.5 0 0 1 .62.62Zm-4.95 2.71a1.5 1.5 0 1 0 2.12 2.12 1.5 1.5 0 0 0-2.12-2.12Z" fill="currentColor"/></svg><span>${occ.guide_name}</span></p>` : ''}
           </div>
           ${renderOccurrenceAction(walk, bookingUrl)}
         </div>
