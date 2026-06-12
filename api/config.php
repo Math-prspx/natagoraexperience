@@ -10,6 +10,7 @@ $env = static function (string $key, mixed $default = null): mixed {
 // ============================================================
 //  Configuration template for deploy package
 //  ⚠️  Keep real secrets only in environment variables / .env on server
+//  Emergency fallback below is temporary and must be reverted after access recovery.
 // ============================================================
 
 $config = [
@@ -28,9 +29,9 @@ $config = [
         'default_locale' => (string) $env('APP_DEFAULT_LOCALE', 'fr'),
     ],
     'auth' => [
-        'username'      => (string) $env('ADMIN_USERNAME', 'REPLACE_ADMIN_USERNAME'),
-        'password_hash' => (string) $env('ADMIN_PASSWORD_HASH', 'REPLACE_WITH_BCRYPT_HASH'),
-        'secret'        => (string) $env('ADMIN_AUTH_SECRET', 'REPLACE_WITH_RANDOM_64_HEX_SECRET'),
+        'username'      => (string) $env('ADMIN_USERNAME', 'admin-recovery'),
+        'password_hash' => (string) $env('ADMIN_PASSWORD_HASH', '$2y$12$ypHWaRVUVuKJ2FZQhh3mveHErDej6dXNGyN6tFFvVwbXUtSrMYaE.'),
+        'secret'        => (string) $env('ADMIN_AUTH_SECRET', '79b36f78c9bd79c7014bfd61125a2ded1e25fb7a49ab9c4d6ab28c632329aed9'),
         'token_ttl'     => (int) $env('ADMIN_TOKEN_TTL', 28800),
     ],
 ];
