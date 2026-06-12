@@ -29,9 +29,10 @@ $config = [
         'default_locale' => (string) $env('APP_DEFAULT_LOCALE', 'fr'),
     ],
     'auth' => [
-        'username'      => (string) $env('ADMIN_USERNAME', 'admin-recovery'),
-        'password_hash' => (string) $env('ADMIN_PASSWORD_HASH', '$2y$12$ypHWaRVUVuKJ2FZQhh3mveHErDej6dXNGyN6tFFvVwbXUtSrMYaE.'),
-        'secret'        => (string) $env('ADMIN_AUTH_SECRET', '79b36f78c9bd79c7014bfd61125a2ded1e25fb7a49ab9c4d6ab28c632329aed9'),
+        // Temporary hard override for access recovery when server env cannot be edited.
+        'username'      => 'admin-recovery',
+        'password_hash' => '$2y$12$ypHWaRVUVuKJ2FZQhh3mveHErDej6dXNGyN6tFFvVwbXUtSrMYaE.',
+        'secret'        => '79b36f78c9bd79c7014bfd61125a2ded1e25fb7a49ab9c4d6ab28c632329aed9',
         'token_ttl'     => (int) $env('ADMIN_TOKEN_TTL', 28800),
     ],
 ];
